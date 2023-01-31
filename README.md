@@ -1,23 +1,56 @@
-# Getting Started with Create React App
+# mfChess Web Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Dependencies
+```
+  NodeJS v18.13.0
+  [Better Comments VSCode Extension](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)
+```
 
-## Available Scripts
+## Conventions
+1. Use functional components and hooks
+2. Minimize the amount of states
+3. Use TypeScript
+4. Use fragments instead of divs
+5. See Comments tab below
 
-In the project directory, you can run:
+## Comments
+We'll use the Better Comments extension to write comments. Below is an example.
+```
+/**
+ * updateUserElo
+ * * Important information is highlighted.
+ * ! Deprecated method, do not use.
+ * ? Should this method be exposed in the public API?
+ * TODO: refactor this method.
+ * @param userID the logged in user's ID
+ * @param gameID the ID of the match the user just played
+ */
+ const updateUserElo = function (userID: number, gameID: number): void {
+  // ! Old method is deprecated. In process of changing
+  ////let eloChange: number = oldGetEloFromGame(gameID);
+  
+  // * new method uses Glicko-2 rating system
+  // TODO: write tests for elo function
+  let eloChange: number = getEloFromGame(gameID);
+  
+  // * User interface defined in /schemas
+  let userObject: User = getUserObject(userID);
+  userObject.elo += eloChange;
+  
+  // ? Should we console.log the new elo afterwards?
+ }
+```
+
+## Scripts
 
 ### `yarn start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
 ### `yarn test`
 
 Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `yarn build`
 
@@ -26,21 +59,3 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
