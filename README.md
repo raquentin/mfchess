@@ -1,10 +1,8 @@
 # mfChess Web Frontend
 
 ## Dependencies
-```
-  NodeJS v18.13.0
-  [Better Comments VSCode Extension](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)
-```
+1. `NodeJS v18.13.0`
+2. [`Better Comments VSCode Extension`](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)
 
 ## Conventions
 1. Use functional components and hooks
@@ -43,19 +41,12 @@ We'll use the Better Comments extension to write comments. Below is an example.
 
 ## Scripts
 
-### `yarn start`
+1. `yarn start`
+  - Runs the app in the development mode.
+  - Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2. `yarn test`
+  - Launches the test runner in the interactive watch mode.\
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. `yarn build`
+  - Builds the app for production to the `build` folder.\
