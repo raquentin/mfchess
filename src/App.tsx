@@ -1,11 +1,14 @@
-//* import libs
+//* import third-party
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
-//* import pages
-import Nav from "./components/common/nav/Container";
-import IndexPage from "./components/pages/index/Container";
-import ProfilePage from "./components/pages/profile/Container";
+//* import local (utils)
+import RouteWrapper from "./components/common/ViewWrapper";
+
+//* import local (pages)
+import Nav from "./components/common/nav/NavView";
+import Index from "./components/pages/index/IndexView";
+import Profile from "./components/pages/profile/ProfileView";
 
 const App = (): JSX.Element => {
   const location = useLocation();
@@ -14,8 +17,8 @@ const App = (): JSX.Element => {
     <Nav />
     <AnimatePresence mode="wait">
       <Routes key={location.pathname} location={location}>
-        <Route path="/" element={<IndexPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/" element={<Index />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </AnimatePresence>
   </>);
