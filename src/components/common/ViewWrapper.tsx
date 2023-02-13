@@ -1,6 +1,4 @@
-import { Route } from 'react-router-dom';
-
-//* import libs
+//* import third-party
 import { ContainerProps } from "../../utils/interfaces";
 import { motion } from "framer-motion";
 

@@ -1,6 +1,6 @@
 const Nav = (): JSX.Element => {
   return (
-    <h2></h2>
+    <></> //TODO: create this component to match the navbar on the figma
   )
 }
 
