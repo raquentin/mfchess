@@ -3,9 +3,9 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
 //* import pages
-import Nav from "./common/nav/Container";
-import IndexPage from "./pages/index/Container";
-import ProfilePage from "./pages/profile/Container";
+import Nav from "./components/common/nav/Container";
+import IndexPage from "./components/pages/index/Container";
+import ProfilePage from "./components/pages/profile/Container";
 
 const App = (): JSX.Element => {
   const location = useLocation();

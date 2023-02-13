@@ -1,4 +1,4 @@
-import { ContainerProps } from "../utils/interfaces";
+import { ContainerProps } from "../../utils/interfaces";
 import { motion } from "framer-motion";
 
 const RouteWrapper = ({ children }: ContainerProps): JSX.Element => {
