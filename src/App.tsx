@@ -7,7 +7,7 @@ import Nav from "./common/nav/Container";
 import IndexPage from "./pages/index/Container";
 import ProfilePage from "./pages/profile/Container";
 
-export const App = (): JSX.Element => {
+const App = (): JSX.Element => {
   const location = useLocation();
 
   return (<>
