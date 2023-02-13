@@ -6,7 +6,7 @@ import ViewWrapper from "../../common/ViewWrapper";
 
 const IndexPage = (): JSX.Element => {
   return (
-    <ViewWrapper> //* holds animation and container logic
+    <ViewWrapper> {/** holds animation and container logic*/}
       <h2>Index</h2>
       <Link to="/profile">profile page</Link>
     </ViewWrapper>
