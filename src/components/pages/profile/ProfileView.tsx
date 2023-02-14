@@ -1,8 +1,8 @@
-//* import third-party
+//* import third-party deps
 import { Link } from "react-router-dom";
 
 //* import local
-import ViewWrapper from "../../common/ViewWrapper";
+import ViewWrapper from "components/common/ViewWrapper";
 
 const ProfilePage = (): JSX.Element => {
   return (

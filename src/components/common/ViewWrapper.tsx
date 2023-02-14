@@ -1,8 +1,12 @@
-//* import third-party
-import { ContainerProps } from "../../utils/interfaces";
+//* import third-party deps
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-const ViewWrapper = ({ children }: ContainerProps): JSX.Element => {
+interface ViewWrapperProps {
+  children?: ReactNode; //* props of containers must be ReactNodes
+}
+
+const ViewWrapper = ({ children }: ViewWrapperProps): JSX.Element => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
