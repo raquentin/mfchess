@@ -1,9 +1,13 @@
-body {
+/* TODO: delete this and use styled-components instead */
+
+html, body, #root {
+  height: 100vh;
   margin: 0;
-  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+}
+
+body {
+  font-family: 'Roboto', -apple-system;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #287485;
 }
-/* TODO: delete this and use styled-components instead */

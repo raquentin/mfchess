@@ -20,8 +20,8 @@ We'll use the Better Comments extension to write comments. Below is an example.
  * ! Deprecated method, do not use.
  * ? Should this method be exposed in the public API?
  * TODO: refactor this method.
- * @param userID the logged in user's ID
- * @param gameID the ID of the match the user just played
+ * @prop userID the logged in user's ID
+ * @prop gameID the ID of the match the user just played
  */
  const updateUserElo = function (userID: number, gameID: number): void {
   // ! Old method is deprecated. In process of changing
