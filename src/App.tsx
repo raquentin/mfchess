@@ -2,13 +2,11 @@
 import { useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import styled from "styled-components";
 
 //* import local (utils)
 import ThemeColorContext from "./context/colorContext";
 
 //* import local (pages)
-import Nav from "components/common/nav/NavView";
 import Index from "components/pages/index/IndexView";
 import Profile from "components/pages/profile/ProfileView";
 
