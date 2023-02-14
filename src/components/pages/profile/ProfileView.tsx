@@ -6,7 +6,7 @@ import ViewWrapper from "components/common/ViewWrapper";
 
 /*
  * ProfileView is the head component for the profile page (mfchess.com/user/{userID}, or mrchess.com/profile for now)
- * @returns JSX.element jsx structure for the profile page
+ @returns JSX.element jsx structure for the profile page
 */
 const ProfileView = (): JSX.Element => {
   //* render

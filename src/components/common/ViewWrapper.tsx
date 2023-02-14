@@ -12,9 +12,9 @@ interface ViewWrapperProps {
 
 /*
  * ViewWrapper contains the page transition logic for RouteViews like IndexView and ProfileView
- * @prop children: ViewWrapperProps = ReactNode (a page like IndexView)
- * @context themeColor: string = the hexcode string for the global theme color
- * @returns JSX.Element the child(ren) route page wrapped in page transition logic
+ @prop children: ViewWrapperProps = ReactNode (a page like IndexView)
+ @context themeColor: string = the hexcode string for the global theme color
+ @returns JSX.Element the child(ren) route page wrapped in page transition logic
 */
 const ViewWrapper = ({ children }: ViewWrapperProps): JSX.Element => {
   //* component logic
