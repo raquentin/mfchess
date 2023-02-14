@@ -9,6 +9,7 @@ import ThemeColorContext from "./context/colorContext";
 //* import local (pages)
 import Index from "components/pages/index/IndexView";
 import Profile from "components/pages/profile/ProfileView";
+import Game from "components/pages/game/ProfileView";
 
 /*
  * App is the head component for the entire site
@@ -25,6 +26,7 @@ const App = (): JSX.Element => {
           <Routes key={location.pathname} location={location}>
             <Route path="/" element={<Index />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/game" element={<Game />} />
           </Routes>
         </AnimatePresence>
       </ThemeColorContext.Provider>

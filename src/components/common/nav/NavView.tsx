@@ -33,6 +33,8 @@ export default NavView;
 
 /*
  * NavContainer extends the motion.div while making it take the entire screen
+ ! some width values for ViewWrapper rely on a hardcoded reference to the NavContainer's width. you may not change one without the other.
+ TODO: write a jest test to ensure the widths add upp to the window width
 */
 const NavContainer = styled.div`
   display: flex;
