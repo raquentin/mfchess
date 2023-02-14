@@ -20,16 +20,10 @@ const ViewWrapper = ({ children }: ViewWrapperProps): JSX.Element => {
   //* component logic
   const themeColor = useContext(ThemeColorContext);
 
-  //* styled-components
-  const MotionContainer = styled(motion.div)`
-    min-height: 100vh;
-    max-width: 100%;
-    background-color: ${themeColor};
-  `;
-
   //* render
   return (
     <MotionContainer
+      themeColor={themeColor}
       initial={{ opacity: 0.0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0.0 }}
@@ -40,3 +34,14 @@ const ViewWrapper = ({ children }: ViewWrapperProps): JSX.Element => {
 }
 
 export default ViewWrapper;
+
+//lines below this point are styled-components logic
+
+/*
+ * MotionContainer extends the motion.div while making it take the entire screen
+*/
+const MotionContainer = styled(motion.div)< {themeColor: string }>`
+  min-height: 100vh;
+  max-width: 100%;
+  background-color: ${props => props.themeColor};
+`;
