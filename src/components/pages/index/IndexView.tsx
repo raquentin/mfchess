@@ -15,7 +15,7 @@ const IndexView = (): JSX.Element => {
   return (
     <ViewWrapper> {/** holds animation and container logic*/}
       <PageContainer>
-        <Logo className="logo-image" src={LogoPNG} />  
+        <LogoImage src={LogoPNG} />  
         <RightSideContent>
           <TitleText>mfChess</TitleText>
           <PlayButton to="/profile">PLAY</PlayButton>
@@ -43,7 +43,7 @@ const PageContainer = styled.div`
 /*
  * Logo is the mfChess logo on the left
 */
-const Logo = styled.img`
+const LogoImage = styled.img`
   height: 60vh;
 `;
 

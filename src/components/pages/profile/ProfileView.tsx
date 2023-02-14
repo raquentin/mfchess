@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 //* import local
 import ViewWrapper from "components/common/ViewWrapper";
+import Nav from "components/common/nav/NavView";
 
 /*
  * ProfileView is the head component for the profile page (mfchess.com/user/{userID}, or mrchess.com/profile for now)
@@ -11,9 +12,9 @@ import ViewWrapper from "components/common/ViewWrapper";
 const ProfileView = (): JSX.Element => {
   //* render
   return (
-    <ViewWrapper> {/** holds animation and container logic*/}
-      <h2>Profile</h2>
-      <Link to="/">index page</Link>
+    <ViewWrapper backgroundColor={"#333333"}> {/** holds animation and container logic*/}
+      <Nav />
+      <p>hi</p>
     </ViewWrapper>
     );
 }

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import styled from "styled-components";
 
 //* import local (utils)
 import ThemeColorContext from "./context/colorContext";
@@ -21,17 +22,18 @@ const App = (): JSX.Element => {
 
   //* render
   return (
-    <ThemeColorContext.Provider value={themeColor}>
-      {location.pathname !== '/' && <Nav />}
-      <AnimatePresence mode="wait">
-        <Routes key={location.pathname} location={location}>
-          <Route path="/" element={<Index />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </AnimatePresence>
-    </ThemeColorContext.Provider>
+      <ThemeColorContext.Provider value={themeColor}>
+        <AnimatePresence mode="wait">
+          <Routes key={location.pathname} location={location}>
+            <Route path="/" element={<Index />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </AnimatePresence>
+      </ThemeColorContext.Provider>
   );
   
 }
 
 export default App;
+
+//
