@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import ViewWrapper from "components/common/ViewWrapper";
 
 const ProfilePage = (): JSX.Element => {
+  //* render
   return (
     <ViewWrapper> {/** holds animation and container logic*/}
       <h2>Profile</h2>
