@@ -22,7 +22,7 @@ const App = (): JSX.Element => {
   //* render
   return (
     <ThemeColorContext.Provider value={themeColor}>
-      <Nav />
+      {location.pathname !== '/' && <Nav />}
       <AnimatePresence mode="wait">
         <Routes key={location.pathname} location={location}>
           <Route path="/" element={<Index />} />
@@ -31,6 +31,7 @@ const App = (): JSX.Element => {
       </AnimatePresence>
     </ThemeColorContext.Provider>
   );
+  
 }
 
 export default App;
