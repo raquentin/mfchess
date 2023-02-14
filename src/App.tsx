@@ -11,10 +11,15 @@ import Nav from "components/common/nav/NavView";
 import Index from "components/pages/index/IndexView";
 import Profile from "components/pages/profile/ProfileView";
 
+/*
+ * App is the head component for the entire site
+*/
 const App = (): JSX.Element => {
+  //* component logic
   const location = useLocation();
   const [themeColor, setThemeColor] = useState<string>("#287485");
 
+  //* render
   return (
     <ThemeColorContext.Provider value={themeColor}>
       <Nav />

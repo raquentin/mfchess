@@ -8,7 +8,11 @@ import ViewWrapper from "components/common/ViewWrapper";
 import LogoPNG from "assets/logo.png";
 import ThemeColorContext from "context/colorContext";
 
-const IndexPage = (): JSX.Element => {
+/*
+ * IndexView is the head component for the index page (mfchess.com/)
+ * @returns JSX.element jsx structure for the index page
+*/
+const IndexView = (): JSX.Element => {
   //* component logic
   const themeColor = useContext(ThemeColorContext);
 
@@ -32,6 +36,4 @@ const IndexPage = (): JSX.Element => {
   );
 }
 
-
-
-export default IndexPage;
+export default IndexView;
