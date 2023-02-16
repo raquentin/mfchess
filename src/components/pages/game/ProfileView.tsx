@@ -4,19 +4,19 @@ import styled from "styled-components";
 //* import local
 import ViewWrapper from "components/common/ViewWrapper";
 /*
- * ProfileView is the head component for the profile page (mfchess.com/user/{userID}, or mrchess.com/profile for now)
+ * GameView is the head component for the game page (mfchess.com/game/{gameID}, or mrchess.com/game for now)
  @returns JSX.element jsx structure for the profile page
 */
-const ProfileView = (): JSX.Element => {
+const GameView = (): JSX.Element => {
   //* render
   return (
     <ViewWrapper backgroundColor={"#333333"} hasNavbar> {/** holds animation and container logic*/}
-      <PlaceholderText>Profile</PlaceholderText>
+      <PlaceholderText>Game</PlaceholderText>
     </ViewWrapper>
     );
 }
 
-export default ProfileView;
+export default GameView;
 
 //lines below this point are styled-components logic
 

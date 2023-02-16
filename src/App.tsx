@@ -7,9 +7,9 @@ import { AnimatePresence } from "framer-motion";
 import ThemeColorContext from "./context/colorContext";
 
 //* import local (pages)
-import Nav from "components/common/nav/NavView";
 import Index from "components/pages/index/IndexView";
 import Profile from "components/pages/profile/ProfileView";
+import Game from "components/pages/game/ProfileView";
 
 /*
  * App is the head component for the entire site
@@ -21,16 +21,19 @@ const App = (): JSX.Element => {
 
   //* render
   return (
-    <ThemeColorContext.Provider value={themeColor}>
-      <Nav />
-      <AnimatePresence mode="wait">
-        <Routes key={location.pathname} location={location}>
-          <Route path="/" element={<Index />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </AnimatePresence>
-    </ThemeColorContext.Provider>
+      <ThemeColorContext.Provider value={themeColor}>
+        <AnimatePresence mode="wait">
+          <Routes key={location.pathname} location={location}>
+            <Route path="/" element={<Index />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/game" element={<Game />} />
+          </Routes>
+        </AnimatePresence>
+      </ThemeColorContext.Provider>
   );
+  
 }
 
 export default App;
+
+//
