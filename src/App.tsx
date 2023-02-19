@@ -9,7 +9,7 @@ import ThemeColorContext from "./context/colorContext";
 //* import local (pages)
 import Index from "components/pages/index/IndexView";
 import Profile from "components/pages/profile/ProfileView";
-import Game from "components/pages/game/ProfileView";
+import Game from "components/pages/game/GameView";
 
 /*
  * App is the head component for the entire site
