@@ -25,7 +25,6 @@ const InGameProfile = ({ userID, side }: Props): JSX.Element => {
       </ProfileInformation>
       <GameInformation >
         <img ></img>
-        <div>3:22</div>
       </GameInformation>
     </ProfileContainer>
   )
