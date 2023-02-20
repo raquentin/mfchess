@@ -1,7 +1,12 @@
 import React, { useState } from "react"
 
 
-export const UserContext = React.createContext(undefined)
+
+interface UserType {
+    loggedIn: Boolean;
+}
+
+export const UserContext = React.createContext<UserType>({loggedIn: false})
 
 interface Props {
     children: React.ReactNode;
@@ -9,7 +14,14 @@ interface Props {
 
 
 export const UserProvider: React.FC<Props> = ({ children }) => {
-    const [user, setUser] = useState();
+    const [user, setUser] = useState<UserType>({loggedIn: false});
+
+    const toggleLoggedIn = () => {
+        setUser((user: UserType) => {
+            user.loggedIn = !user.loggedIn;
+            return user;
+        })
+    }
 
     return (
         <UserContext.Provider value={user}>
