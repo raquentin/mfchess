@@ -5,11 +5,15 @@ import { AnimatePresence } from "framer-motion";
 
 //* import local (utils)
 import ThemeColorContext from "./context/colorContext";
+import {UserProvider} from "./context/UserContext";
 
 //* import local (pages)
 import Index from "components/pages/index/IndexView";
 import Profile from "components/pages/profile/ProfileView";
 import Game from "components/pages/game/ProfileView";
+
+// 
+import Login from "components/Login"
 
 /*
  * App is the head component for the entire site
@@ -21,15 +25,18 @@ const App = (): JSX.Element => {
 
   //* render
   return (
+    <UserProvider>
       <ThemeColorContext.Provider value={themeColor}>
         <AnimatePresence mode="wait">
           <Routes key={location.pathname} location={location}>
             <Route path="/" element={<Index />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/game" element={<Game />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </AnimatePresence>
       </ThemeColorContext.Provider>
+    </UserProvider>
   );
   
 }
