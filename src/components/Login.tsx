@@ -1,23 +1,37 @@
-import { useEffect, useContext } from "react";
-import Axios from "axios";
+import { useEffect } from "react";
 import {useNavigate} from 'react-router-dom';
-import {UserContext} from "../context/UserContext";
+import {defaultUser, useUser} from "../context/UserContext";
+import {UserType} from "../types/User"
 
-type loginInput = {
-  user: { loggedIn: any; };
-};
+import AxiosInstance from "../utils/axiosInstance";
 
 /**
  * ! Will fix and clean up later! (gio)
  */
 
 const Login: React.FunctionComponent = ()  => {
-  const user = useContext(UserContext)
+  const [user, updateUser, fetchUser] = useUser()
   const navigate = useNavigate();
-  
-  function handleCredentialResponse(response: { credential: any; }) {
+  /**
+   * ! Will write the typescript stuff for this
+   */
+  const handleCredentialResponse = (response: { credential: any; }) => {
     console.log("Logged in:", response.credential)
-
+    AxiosInstance({
+      method: 'post',
+      url: "login",
+      data: {token: response.credential},
+    }).then((response) => {
+      console.log(response.data);
+      updateUser!((user: UserType) => {
+        user.loggedIn = true;
+        user.userID = response.data.sub
+        // console.log("setted")
+        return user;
+      })
+      navigate('/', {replace: true});
+      fetchUser!();
+    })
     // Axios.post("http://localhost:3002/login", {
     //   token: response.credential
     // }).then((response) => {
@@ -27,7 +41,7 @@ const Login: React.FunctionComponent = ()  => {
   }
 
   // Use sub(UserID) to retrieve user info in db.
-  function getUserInfo(userID: String) {
+  const getUserInfo = (userID: String) => {
     // Axios.post("http://localhost:3002/userInfo", {
     //   sub: userID
     // }).then((response) => {
@@ -36,12 +50,13 @@ const Login: React.FunctionComponent = ()  => {
     // });
   }
 
-  function signOut() {
+  const signOut = () => {
     window.google.accounts.id.disableAutoSelect();
-    // updateUser(null, false);
+    updateUser!((user: UserType) => defaultUser())
     navigate('/', {replace: true});
   }
   
+  // componentDidMount(){
   useEffect( () => {
     let google = window.google;
     // Initialize google auth using our OAuth 2.0 Client ID
@@ -51,20 +66,25 @@ const Login: React.FunctionComponent = ()  => {
       callback: handleCredentialResponse,
     });
 
-    // Render the button using google's library
-    google.accounts.id.renderButton(
-      document.getElementById("buttonDiv")!,
-      {
-        theme: "outline", size: "small",
-        type: "standard"
-      }
-    );
-    google.accounts.id.prompt();
-  })
+    if (!user!.loggedIn) {
+      // Render the button using google's library
+      google.accounts.id.renderButton(
+        document.getElementById("buttonDiv")!,
+        {
+          theme: "outline", size: "small",
+          type: "standard"
+        }
+      );
+      google.accounts.id.prompt();
+    }
+  // }
+  },[])
 
   return (
     <div>
-      {user!.loggedIn ? <button onClick={signOut}> Logout </button> : <div id="buttonDiv"></div>}
+      <>{user!.loggedIn ? <button onClick={signOut}> Logout </button> : <div id="buttonDiv"></div>}
+        {console.log(user)}
+      </>
     </div>
   );
 }

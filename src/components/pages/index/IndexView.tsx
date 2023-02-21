@@ -19,6 +19,9 @@ const IndexView = (): JSX.Element => {
         <RightSideContent>
           <TitleText>mfChess</TitleText>
           <PlayButton to="/profile">PLAY</PlayButton>
+
+          {/* !Temporary for testing */}
+          <PlayButton to="/login">LOGIN</PlayButton>
         </RightSideContent>
       </PageContainer>
     </ViewWrapper>
