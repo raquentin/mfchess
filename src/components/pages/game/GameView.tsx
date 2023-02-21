@@ -52,8 +52,8 @@ const PlayerContainer = styled.div`
   justify-content: space-between;
   align-content: center;
   @media (max-width: 1000px) {
-    height: 100px;
-    width: 100px;
+    width: 95%;
+    height: 250px;
   }
 `;
 const MoveContainer = styled.div`
@@ -61,8 +61,8 @@ const MoveContainer = styled.div`
   grid-column: 2 / 3;
   grid-row: 2 / 3;
   @media (max-width: 1000px) {
-    height: 100px;
-    width: 100px;
+    width: 95%;
+    height: 250px;
   }
 `;
 const PlaceholderText = styled.p`
