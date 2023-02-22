@@ -12,6 +12,7 @@ import Index from "components/pages/index/IndexView";
 import Profile from "components/pages/profile/ProfileView";
 import Game from "components/pages/game/ProfileView";
 import Login from "components/Login"
+import ChatRoom from "components/ChatRoom";
 
 
 /* 
@@ -34,6 +35,7 @@ const App = (): JSX.Element => {
             
             {/*! Temporary */}
             <Route path="/login" element={<Login />} />
+            <Route path="/chatroom" element={<ChatRoom />} />
           </Routes>
         </AnimatePresence>
       </ThemeColorContext.Provider>

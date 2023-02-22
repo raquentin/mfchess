@@ -1,11 +1,9 @@
 import { SetStateAction, useEffect, useState } from "react";
 import {useNavigate} from 'react-router-dom';
 import {defaultUser, useUser} from "../context/UserContext";
-import {UserType} from "../types/User"
+import {UserType} from "../types/UserType"
 
 import AxiosInstance from "../utils/axiosInstance";
-
-import sendMessage from "../components/common/ws"
 
 /**
  * * FC for login button, the prompt also pops up if not currently logged in.
@@ -20,22 +18,25 @@ const Login: React.FunctionComponent = ()  => {
    * * use update user. Finally, navigate to main page and call fetchUser to fetch user from db.
    * ! No idea how to write the typescript stuff for this
    */
-  const handleCredentialResponse = (response: { credential: String; }) => {
-    console.log("Logged in:", response.credential)
+  const handleCredentialResponse = (response: { credential: string; }) => {
+    const credential: string  = response.credential
+    console.log("Logged in:", credential)
     AxiosInstance({
       method: 'post',
       url: "login",
-      data: {token: response.credential},
+      data: {token: credential},
     }).then((response) => {
       console.log(response.data);
       updateUser!((user: UserType) => {
         user.loggedIn = true;
         user.userID = response.data.sub
-        // console.log("setted")
+        user.jwtCredential = credential
         return user;
       })
       navigate('/', {replace: true});
       fetchUser!();
+    }).catch((err) => {
+      throw new Error(err)
     })
   }
 
@@ -73,26 +74,13 @@ const Login: React.FunctionComponent = ()  => {
     }
   },[])
 
-  const [inputText, setInputText] = useState('');
-  const handleInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-    setInputText(event.target.value);
-  };
-  const handleButtonClick = () => {
-    sendMessage(inputText);
-  };
-
-
   /**
    * * Show Login button if not logged in, else shows logout button.
    * TODO Make logout look better! as well as the whole page!!
    */
   return (
     <div>
-      <>
       {user!.loggedIn ? <button onClick={signOut}> Logout </button> : <div id="buttonDiv"></div>}
-      <input type="text" value={inputText} onChange={handleInputChange} />
-      <button onClick={handleButtonClick}> send </button>
-      </>
     </div>
   );
 }
