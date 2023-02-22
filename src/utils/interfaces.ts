@@ -7,5 +7,6 @@ import { ThemedStyledProps } from "styled-components";
 */
 export interface SVGProps {
   width: number,
-  color?: string
+  color?: string,
+  isBlack?: boolean
 }
