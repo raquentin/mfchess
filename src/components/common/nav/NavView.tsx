@@ -23,6 +23,7 @@ const NavView = (): JSX.Element => {
       <LogoButton to="/" backgroundColor={themeColor}>
         <LogoImage src={LogoPNG}/>
       </LogoButton>
+      <SwitchPage to="/game">Play Game</SwitchPage>
     </NavContainer>
   );
 }
@@ -57,3 +58,15 @@ const LogoImage = styled.img`
   display: flex;
   width: 3.5em;
 `;
+const SwitchPage = styled(Link)`
+  text-decoration: none;
+  height: 50px;
+  background-color: #EEEEEE;
+  color: #333333;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+`;
+

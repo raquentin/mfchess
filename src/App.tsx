@@ -10,7 +10,7 @@ import {UserProvider} from "./context/UserContext";
 //* import local (pages)
 import Index from "components/pages/index/IndexView";
 import Profile from "components/pages/profile/ProfileView";
-import Game from "components/pages/game/ProfileView";
+import Game from "components/pages/game/GameView";
 import Login from "components/Login"
 
 /*
