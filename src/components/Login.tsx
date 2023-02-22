@@ -1,67 +1,80 @@
-import { useEffect, useContext } from "react";
-import Axios from "axios";
+import { useEffect } from "react";
 import {useNavigate} from 'react-router-dom';
-import {UserContext} from "../context/UserContext";
+import {defaultUser, useUser} from "../context/UserContext";
+import {UserType} from "../types/User"
 
-type loginInput = {
-  user: { loggedIn: any; };
-};
+import AxiosInstance from "../utils/axiosInstance";
 
 /**
- * ! Will fix and clean up later! (gio)
+ * * FC for login button, the prompt also pops up if not currently logged in.
+ * TODO: let prompt pop up in other places (ex: main page)
  */
-
 const Login: React.FunctionComponent = ()  => {
-  const user = useContext(UserContext)
+  const [user, updateUser, fetchUser] = useUser()
   const navigate = useNavigate();
   
-  function handleCredentialResponse(response: { credential: any; }) {
+  /**
+   * * Takes in credential String from google after logging in, pass to backed for decode, then
+   * * use update user. Finally, navigate to main page and call fetchUser to fetch user from db.
+   * ! No idea how to write the typescript stuff for this
+   */
+  const handleCredentialResponse = (response: { credential: String; }) => {
     console.log("Logged in:", response.credential)
-
-    // Axios.post("http://localhost:3002/login", {
-    //   token: response.credential
-    // }).then((response) => {
-    //   console.log(response.data);
-    //   getUserInfo(response.data.sub); // just for showcasing.
-    // });
+    AxiosInstance({
+      method: 'post',
+      url: "login",
+      data: {token: response.credential},
+    }).then((response) => {
+      console.log(response.data);
+      updateUser!((user: UserType) => {
+        user.loggedIn = true;
+        user.userID = response.data.sub
+        // console.log("setted")
+        return user;
+      })
+      navigate('/', {replace: true});
+      fetchUser!();
+    })
   }
 
-  // Use sub(UserID) to retrieve user info in db.
-  function getUserInfo(userID: String) {
-    // Axios.post("http://localhost:3002/userInfo", {
-    //   sub: userID
-    // }).then((response) => {
-    //   // updateUser(response.data.result[0].name, true);
-    //   navigate('/', {replace: true});
-    // });
-  }
-
-  function signOut() {
+  /**
+   * * reset user to default (defined in UserContext)
+   */
+  const signOut = () => {
     window.google.accounts.id.disableAutoSelect();
-    // updateUser(null, false);
+    updateUser!((user: UserType) => defaultUser())
     navigate('/', {replace: true});
   }
   
+  /**
+   * * If not logged in, renders the login button and pops the prompt out.
+   * ? useEffect seems to run twice because of strictmode, doesn't affect anything for now.
+   */
   useEffect( () => {
     let google = window.google;
-    // Initialize google auth using our OAuth 2.0 Client ID
     google.accounts.id.initialize({
       client_id:
         "830413447287-hjqll1sr9jeasrp0k4tele329bsumpep.apps.googleusercontent.com",
       callback: handleCredentialResponse,
     });
 
-    // Render the button using google's library
-    google.accounts.id.renderButton(
-      document.getElementById("buttonDiv")!,
-      {
-        theme: "outline", size: "small",
-        type: "standard"
-      }
-    );
-    google.accounts.id.prompt();
-  })
+    if (!user!.loggedIn) {
+      // Render the button using google's library
+      google.accounts.id.renderButton(
+        document.getElementById("buttonDiv")!,
+        {
+          theme: "outline", size: "small",
+          type: "standard"
+        }
+      );
+      google.accounts.id.prompt();
+    }
+  },[])
 
+  /**
+   * * Show Login button if not logged in, else shows logout button.
+   * TODO Make logout look better! as well as the whole page!!
+   */
   return (
     <div>
       {user!.loggedIn ? <button onClick={signOut}> Logout </button> : <div id="buttonDiv"></div>}
