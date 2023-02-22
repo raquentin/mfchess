@@ -20,7 +20,7 @@ const IndexView = (): JSX.Element => {
           <TitleText>mfChess</TitleText>
           <PlayButton to="/profile">PLAY</PlayButton>
 
-          // ! Temporary for testing
+          {/* Temporary for testing */}
           <PlayButton to="/login">LOGIN</PlayButton>
         </RightSideContent>
       </PageContainer>

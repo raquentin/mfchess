@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import {useNavigate} from 'react-router-dom';
 import {defaultUser, useUser} from "../context/UserContext";
 import {UserType} from "../types/User"
 
 import AxiosInstance from "../utils/axiosInstance";
+
+import sendMessage from "../components/common/ws"
 
 /**
  * * FC for login button, the prompt also pops up if not currently logged in.
@@ -71,13 +73,26 @@ const Login: React.FunctionComponent = ()  => {
     }
   },[])
 
+  const [inputText, setInputText] = useState('');
+  const handleInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+    setInputText(event.target.value);
+  };
+  const handleButtonClick = () => {
+    sendMessage(inputText);
+  };
+
+
   /**
    * * Show Login button if not logged in, else shows logout button.
    * TODO Make logout look better! as well as the whole page!!
    */
   return (
     <div>
+      <>
       {user!.loggedIn ? <button onClick={signOut}> Logout </button> : <div id="buttonDiv"></div>}
+      <input type="text" value={inputText} onChange={handleInputChange} />
+      <button onClick={handleButtonClick}> send </button>
+      </>
     </div>
   );
 }

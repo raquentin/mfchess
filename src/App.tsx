@@ -13,7 +13,8 @@ import Profile from "components/pages/profile/ProfileView";
 import Game from "components/pages/game/ProfileView";
 import Login from "components/Login"
 
-/*
+
+/* 
  * App is the head component for the entire site
 */
 const App = (): JSX.Element => {
@@ -31,7 +32,7 @@ const App = (): JSX.Element => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/game" element={<Game />} />
             
-            // ! Temporary
+            {/*! Temporary */}
             <Route path="/login" element={<Login />} />
           </Routes>
         </AnimatePresence>
