@@ -12,7 +12,7 @@ Client to Server
         {
             type: "upgrade status",
             payload: {
-            name: "pairing"
+            name: "joinRoom"
             userID: "",
             data: "",
             }

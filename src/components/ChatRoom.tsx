@@ -27,7 +27,7 @@ const statusEnum = {
 }
 
 // ! stupid solution, please help
-const numToState = new Map<number, string>([
+const statusNumToDescription = new Map<number, string>([
     [-1, "Error, likely caused by duplicate logins"],
     [0, "Disconnected from server"],
     [1, "Connected to server, but not logged in"],
@@ -123,7 +123,7 @@ const ChatRoom: React.FunctionComponent = ()  => {
                     sendMessage({
                         type: "upgrade status",
                         payload: {
-                            name: "pairing",
+                            name: "joinRoom",
                             userID: "",
                             data: "",
                         }
@@ -184,7 +184,7 @@ const ChatRoom: React.FunctionComponent = ()  => {
             })}
             </MessageListColumn>
         </>
-        : <StatusText>Status: {numToState.get(status)}</StatusText> 
+        : <StatusText>Status: {statusNumToDescription.get(status)}</StatusText> 
         }
       <PlayButton to="/">MAIN</PlayButton>
       </RightSideContent>
