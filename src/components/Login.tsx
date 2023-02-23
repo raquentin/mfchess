@@ -20,13 +20,11 @@ const Login: React.FunctionComponent = ()  => {
    */
   const handleCredentialResponse = (response: { credential: string; }) => {
     const credential: string  = response.credential
-    console.log("Logged in:", credential)
     AxiosInstance({
       method: 'post',
       url: "login",
       data: {token: credential},
     }).then((response) => {
-      console.log(response.data);
       updateUser!((user: UserType) => {
         user.loggedIn = true;
         user.userID = response.data.sub
