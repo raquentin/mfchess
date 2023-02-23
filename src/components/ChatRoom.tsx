@@ -30,7 +30,7 @@ const statusEnum = {
 const numToState = new Map<number, string>([
     [-1, "Error, likely caused by duplicate logins"],
     [0, "Disconnected from server"],
-    [1, "Connected to server"],
+    [1, "Connected to server, but not logged in"],
     [2, "Authenticated by server"],
     [3, "Waiting for opponent"],
     [4, "Paired with opponent"],
