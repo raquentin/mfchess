@@ -1,5 +1,5 @@
 /**
- * * Message Type for sockets
+ * * Message Types for sockets
  * ! To be extended
  */
 export interface PayloadType {

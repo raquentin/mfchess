@@ -7,8 +7,6 @@ export interface UserType {
     userID: string;
     jwtCredential: string;
 
-    socketStatus: string;
-
     name: string;
     email: string;
     profilePictureUrl: string;

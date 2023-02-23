@@ -1,0 +1,64 @@
+Client to Server
+    Upgrading Status
+        {
+            type: "upgrade status",
+            payload: {
+            name: "authentication"
+            userID: "",
+            data: user.jwtCredential,
+            }
+        }
+
+        {
+            type: "upgrade status",
+            payload: {
+            name: "pairing"
+            userID: "",
+            data: "",
+            }
+        }
+    chat
+        {
+            type: "chat",
+            payload: {
+            name: user.name,
+            userID: user.userID,
+            data: inputText,
+            }
+        }
+Server to Client
+    status
+        authentication request
+            {
+                type: "status",
+                payload: {
+                    name: "authentication request",
+                    userID: "",
+                    data: "",
+                }
+            }
+    status update
+        {
+            type: "status",
+            payload: {
+                name: "status update",
+                userID: "",
+                data: "authenticated",
+            }
+        }
+        {
+            type: "status",
+            payload: {
+                name: "status update",
+                userID: "",
+                data: "in queue",
+            }
+        }
+        {
+            type: "status",
+            payload: {
+                name: "status update",
+                userID: "",
+                data: "connected",
+            }
+        }

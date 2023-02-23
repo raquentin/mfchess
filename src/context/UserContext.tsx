@@ -30,8 +30,6 @@ export const defaultUser = () => {
             userID: "",
             jwtCredential: "",
 
-            socketStatus: "not connected",
-
             name: "",
             email: "",
             profilePictureUrl: "",
