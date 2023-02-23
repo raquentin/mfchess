@@ -1,5 +1,7 @@
 import React, { useContext, useState } from "react"
-import {UserType} from "../types/User"
+import {UserType} from "../types/UserType"
+import AxiosInstance from "../utils/axiosInstance";
+
 
 /**
  * * Type for UserContext
@@ -24,7 +26,16 @@ interface Props {
     children: React.ReactNode;
 }
 export const defaultUser = () => {
-    return {loggedIn: false, userID: ""}
+    return {loggedIn: false,
+            userID: "",
+            jwtCredential: "",
+
+            socketStatus: "not connected",
+
+            name: "",
+            email: "",
+            profilePictureUrl: "",
+        }
 }
 /**
  * * Function that Wraps the context into a JSX element to abstract useContext.
@@ -33,12 +44,22 @@ export const UserProvider: React.FC<Props> = ({ children }) => {
     const [user, setUser] = useState<UserType>(defaultUser());
 
     /**
-     * ! to be implemented, fetches user from DB using GraphQL or just axios calls
+     * 
      */
     const fetchUser = () => {
-        // ! don't change any local states such as loggedIn.
         // * use user.userID to query DB
-        console.error("fetchUser undefined")
+        if (!user.loggedIn) throw new Error("User not logged in.")
+        AxiosInstance.post("login/userInfo", {
+            sub: user.userID
+        }).then((response) => {
+            const fetchedUser = response.data.result[0]
+            setUser((user: UserType) => {
+                user.name = fetchedUser.name;
+                user.email = fetchedUser.email;
+                user.profilePictureUrl = fetchedUser.profilePictureUrl;
+                return user;
+              })
+        });
     }
 
     return (
