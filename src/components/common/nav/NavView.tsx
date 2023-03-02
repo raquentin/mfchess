@@ -53,6 +53,11 @@ const LogoButton = styled(Link)< {backgroundColor: string} >`
   height: 15%;
   gap: 2em;
   background-color: ${props => props.backgroundColor};
+  
+  transition: all 0.3s ease;
+  &:hover {
+    background-color: #888888;
+  }
 `;
 const LogoImage = styled.img`
   display: flex;
