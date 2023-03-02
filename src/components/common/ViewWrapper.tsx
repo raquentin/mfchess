@@ -27,7 +27,7 @@ const ViewWrapper = ({ children, hasNavbar, backgroundColor }: ViewWrapperProps)
   if (hasNavbar) {
     return (
       <MotionContainerWithNavbar
-        backgroundColor={backgroundColor ? backgroundColor : themeColor}
+        backgroundColor={backgroundColor ? backgroundColor : "#287485"}
         initial={{ opacity: 0.0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0.0 }}
@@ -41,7 +41,7 @@ const ViewWrapper = ({ children, hasNavbar, backgroundColor }: ViewWrapperProps)
   } else {
     return (
       <MotionContainerWithoutNavbar
-        backgroundColor={backgroundColor ? backgroundColor : themeColor}
+        backgroundColor={backgroundColor ? backgroundColor : "#287485"}
         initial={{ opacity: 0.0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0.0 }}

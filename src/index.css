@@ -9,5 +9,5 @@ body {
   font-family: 'Roboto', -apple-system !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #287485; /* TODO: move this to react component*/
+  background-color: #333333; /* TODO: move this to react component*/
 }
