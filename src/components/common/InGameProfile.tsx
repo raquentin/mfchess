@@ -1,13 +1,85 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 import LogoPNG from "assets/user-profile-icon-free-vector.png";
 import Banner from "assets/banner.jpg";
 
 interface Props {
   userID: Number;
   side: String;
+  startedGame: boolean;
+  isTurn: boolean;
 }
 
-const InGameProfile = ({ userID, side }: Props): JSX.Element => {
+const InGameProfile = ({ userID, side, startedGame, isTurn }: Props): JSX.Element => {
+
+  const [time, setTime] = useState(-1);
+  const [pausedTime, setPausedTime] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const initialTimeAmount: number = 300000;
+
+  useEffect(() => {
+    if(!startedGame) {
+      return;
+    } else if(time === -1) {
+      // Get current time and set the timer to be 5 minutes
+      setTime(Date.now());
+      setHours(Math.floor((initialTimeAmount / (1000 * 60 * 60)) % 24));
+      setMinutes(Math.floor((initialTimeAmount / 1000 / 60) % 60));
+      setSeconds(Math.round((initialTimeAmount / 1000) % 60));
+    }
+    // Keep tracks of the duration that isn't the player's turn and
+    // adds that duration to time once it becomes player's turn again
+    if(!isTurn) {
+      setPausedTime(Date.now());
+    } else {
+      setTime(time + (Date.now() - pausedTime))
+    }
+
+    // Triggers the clock once all conditions have been met
+    if(isTurn && startedGame) {
+      setIsActive(true);
+    } else {
+      setIsActive(false);
+    }
+  }, [startedGame, isTurn]);
+
+
+  useEffect(() => {
+    if(!isActive) return;
+    const interval = setInterval(() => {
+      const newTime = initialTimeAmount - (Date.now() - time);
+      console.log(newTime);
+      if(newTime < 0) {
+        setHours(0);
+        setMinutes(0);
+        setSeconds(0);
+        clearInterval(interval);
+        return;
+      }
+      setHours(Math.floor((newTime / (1000 * 60 * 60)) % 24));
+      setMinutes(Math.floor((newTime / 1000 / 60) % 60));
+      setSeconds(Math.round((newTime / 1000) % 60));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [isActive, seconds])
+
+
+  const standardizeTime = () => {
+    let timeString = "";
+    if(minutes < 10) {
+      timeString += "0";
+    }
+    timeString += minutes.toString();
+    timeString += ":"
+    if(seconds < 10) {
+      timeString += "0";
+    }
+    timeString += seconds.toString();
+    return timeString;
+  }
 
   return (
     <ProfileContainer>
@@ -24,7 +96,7 @@ const InGameProfile = ({ userID, side }: Props): JSX.Element => {
         </ProfileDetails>
       </ProfileInformation>
       <GameInformation >
-        <img ></img>
+        <TimerContainer>{standardizeTime()}</TimerContainer>
       </GameInformation>
     </ProfileContainer>
   )
@@ -95,4 +167,8 @@ const GameInformation = styled.div`
   background-color: #333333;
   height: 16%;
   width: 85%;
+`;
+
+const TimerContainer = styled.div`
+  color: white;
 `;
