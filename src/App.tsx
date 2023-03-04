@@ -11,11 +11,11 @@ import {UserProvider} from "./context/UserContext";
 import Index from "components/pages/index/IndexView";
 import Profile from "components/pages/profile/ProfileView";
 import Game from "components/pages/game/GameView";
-
-// 
 import Login from "components/Login"
+import ChatRoom from "components/ChatRoom";
 
-/*
+
+/* 
  * App is the head component for the entire site
 */
 const App = (): JSX.Element => {
@@ -32,7 +32,10 @@ const App = (): JSX.Element => {
             <Route path="/" element={<Index />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/game" element={<Game />} />
+            
+            {/*! Temporary */}
             <Route path="/login" element={<Login />} />
+            <Route path="/chatroom" element={<ChatRoom />} />
           </Routes>
         </AnimatePresence>
       </ThemeColorContext.Provider>

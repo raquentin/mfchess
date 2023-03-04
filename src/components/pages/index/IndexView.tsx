@@ -19,6 +19,10 @@ const IndexView = (): JSX.Element => {
         <RightSideContent>
           <TitleText>mfChess</TitleText>
           <PlayButton to="/profile">PLAY</PlayButton>
+
+          {/* Temporary for testing */}
+          <PlayButton to="/login">LOGIN</PlayButton>
+          <PlayButton to="/chatroom">CHATROOM</PlayButton>
         </RightSideContent>
       </PageContainer>
     </ViewWrapper>
@@ -32,7 +36,7 @@ export default IndexView;
 /*
  * PageContainer is the flexbox that wraps the two sides of the screen
 */
-const PageContainer = styled.div`
+export const PageContainer = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;
@@ -43,14 +47,14 @@ const PageContainer = styled.div`
 /*
  * Logo is the mfChess logo on the left
 */
-const LogoImage = styled.img`
+export const LogoImage = styled.img`
   height: 60vh;
 `;
 
 /*
  * RightSideContainer is the flexbox on the right that aligns the mfChess title and the play button
 */
-const RightSideContent = styled.div`
+export const RightSideContent = styled.div`
   display: flex;
   gap: 2em;
   flex-direction: column;
@@ -61,7 +65,7 @@ const RightSideContent = styled.div`
 /*
  * TitleText is the mfChess title
 */
-const TitleText = styled.h1`
+export const TitleText = styled.h1`
   color: white;
   font-size: 10em;
   font-weight: 800;
@@ -72,7 +76,7 @@ const TitleText = styled.h1`
  * PlayButton is the play button that extends the react-router-dom Link component
  TODO: make the hover effect better
 */
-const PlayButton = styled(Link)`
+export const PlayButton = styled(Link)`
   background-color: black;
   color: white;
   font-size: 3em;

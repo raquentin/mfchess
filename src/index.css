@@ -1,4 +1,4 @@
-/* TODO: delete this and use styled-components instead */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,900;1,400&display=swap');
 
 html, body, #root {
   height: 100vh;
@@ -6,8 +6,8 @@ html, body, #root {
 }
 
 body {
-  font-family: 'Roboto', -apple-system;
+  font-family: 'Roboto', -apple-system !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #287485;
+  background-color: #287485; /* TODO: move this to react component*/
 }
