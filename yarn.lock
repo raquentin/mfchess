@@ -3206,6 +3206,11 @@ check-types@^11.1.1:
   resolved "https://registry.yarnpkg.com/check-types/-/check-types-11.2.2.tgz#7afc0b6a860d686885062f2dba888ba5710335b4"
   integrity sha512-HBiYvXvn9Z70Z88XKjz3AEKd4HJhBXsa3j7xFnITAzoS8+q6eIGi8qDB8FKPBAjtuxjI/zFpwuiCb8oDtKOYrA==
 
+chess.js@^1.0.0-beta.3:
+  version "1.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/chess.js/-/chess.js-1.0.0-beta.3.tgz#5a453f9d8df8f32c87480a395c9b411f080b26ab"
+  integrity sha512-zu8QVvP0BmMzrstlsrXL2LxdHfAkrtyNftVRaJXGI5mn2ZSsgTJujvZx5BVJsPMwBkRZ+omCdZkVyVLBlKn2HA==
+
 chess@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/chess/-/chess-1.1.0.tgz#d434c22ee85a6c10db9fcf706c4bad1314b035d5"
