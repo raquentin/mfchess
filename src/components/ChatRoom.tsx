@@ -3,7 +3,7 @@ import {useUser} from "../context/UserContext";
 import {MessageType, PayloadType} from "../types/MessageType"
 import styled from "styled-components";
 import ViewWrapper from "./common/ViewWrapper";
-import { PageContainer, PlayButton, RightSideContent, TitleText } from "./pages/index/IndexView";
+import { PageContainer, PlayButton, RightSideContainer, TitleText } from "./pages/index/IndexView";
 import Payload from "./Payload";
 
 const ws: WebSocket = new WebSocket('ws://localhost:4000')
@@ -172,7 +172,7 @@ const ChatRoom: React.FunctionComponent = ()  => {
   return (
     <ViewWrapper> {/** holds animation and container logic*/}
     <PageContainer>
-      <RightSideContent>
+      <RightSideContainer>
         <TitleText>ChatRoom</TitleText>
         {status === statusEnum.Paired ? 
         <>
@@ -187,7 +187,7 @@ const ChatRoom: React.FunctionComponent = ()  => {
         : <StatusText>Status: {statusNumToDescription.get(status)}</StatusText> 
         }
       <PlayButton to="/">MAIN</PlayButton>
-      </RightSideContent>
+      </RightSideContainer>
     </PageContainer>
   </ViewWrapper>
   );

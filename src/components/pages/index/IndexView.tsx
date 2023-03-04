@@ -15,15 +15,15 @@ const IndexView = (): JSX.Element => {
   return (
     <ViewWrapper> {/** holds animation and container logic*/}
       <PageContainer>
-        <LogoImage src={LogoPNG} />  
-        <RightSideContent>
+        <LogoImage src={LogoPNG} />
+        <RightSideContainer>
           <TitleText>mfChess</TitleText>
-          <PlayButton to="/profile">PLAY</PlayButton>
-
-          {/* Temporary for testing */}
-          <PlayButton to="/login">LOGIN</PlayButton>
-          <PlayButton to="/chatroom">CHATROOM</PlayButton>
-        </RightSideContent>
+          <ButtonContainer>
+            <PlayButton to="/profile">play</PlayButton>
+            <PlayButton to="/login">login</PlayButton>
+            <PlayButton to="/chatroom">chatroom</PlayButton>
+          </ButtonContainer>
+        </RightSideContainer>
       </PageContainer>
     </ViewWrapper>
   );
@@ -38,9 +38,22 @@ export default IndexView;
 */
 export const PageContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 97vh;
+  gap: 5em;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
+  align-items: center;
+`;
+
+/*
+ * ContentRow is the flexbox that wraps the two sides of the screen
+*/
+export const ContentRow = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5em;
   align-items: center;
 `;
 
@@ -48,13 +61,13 @@ export const PageContainer = styled.div`
  * Logo is the mfChess logo on the left
 */
 export const LogoImage = styled.img`
-  height: 60vh;
+  height: 40vh;
 `;
 
 /*
  * RightSideContainer is the flexbox on the right that aligns the mfChess title and the play button
 */
-export const RightSideContent = styled.div`
+export const RightSideContainer = styled.div`
   display: flex;
   gap: 2em;
   flex-direction: column;
@@ -73,19 +86,31 @@ export const TitleText = styled.h1`
 `;
 
 /*
+ * ButtonContainer is the flexbox on the right that aligns the mfChess title and the play button
+*/
+export const ButtonContainer = styled.div`
+  display: flex;
+  gap: 2em;
+  align-items: center;
+  justify-content: center;
+`;
+
+/*
  * PlayButton is the play button that extends the react-router-dom Link component
  TODO: make the hover effect better
 */
 export const PlayButton = styled(Link)`
-  background-color: black;
+  background-color: #333333;
+  border: 0.22em solid black;
+  border-radius: 14px;
   color: white;
   font-size: 3em;
   font-weight: 800;
   text-decoration: none;
-  padding: 0.5em 2em;
+  padding: 0.25em 0.5em;
 
-  transition: all 0.8s ease;
+  transition: all 0.3s ease;
   &:hover {
-    background-color: grey;
+    background-color: #287485;
   }
 `;
