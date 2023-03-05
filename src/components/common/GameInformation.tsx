@@ -1,3 +1,4 @@
+import ChatRoom from "components/ChatRoom";
 import styled from "styled-components";
 
 const GameInformation = (): JSX.Element => {
@@ -7,7 +8,7 @@ const GameInformation = (): JSX.Element => {
 
       </MoveHistory>
       <ChatContainer>
-
+        <ChatRoom></ChatRoom>
       </ChatContainer>
     </InfoContainer>
   )

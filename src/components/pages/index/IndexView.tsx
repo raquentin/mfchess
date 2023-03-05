@@ -19,9 +19,9 @@ const IndexView = (): JSX.Element => {
         <RightSideContainer>
           <TitleText>mfChess</TitleText>
           <ButtonContainer>
-            <PlayButton to="/profile">play</PlayButton>
+            <PlayButton to="/game">play</PlayButton>
             <PlayButton to="/login">login</PlayButton>
-            <PlayButton to="/chatroom">chatroom</PlayButton>
+            {/* <PlayButton to="/chatroom">chatroom</PlayButton> */}
           </ButtonContainer>
         </RightSideContainer>
       </PageContainer>

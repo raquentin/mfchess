@@ -12,20 +12,30 @@ Client to Server
         {
             type: "upgrade status",
             payload: {
-            name: "joinRoom"
-            userID: "",
-            data: "",
+                name: "joinRoom"
+                userID: "",
+                data: "",
             }
         }
     chat
         {
             type: "chat",
-            payload: {
-            name: user.name,
-            userID: user.userID,
-            data: inputText,
+            payload:{
+                name: user.name,
+                userID: user.userID,
+                data: inputText,
             }
         }
+    game
+        move
+            {
+                type: "game",
+                payload: {
+                    name: "move",
+                    userID: "",
+                    data: JSON.stringify(move), #move: SocketMoveType
+                }
+            }
 Server to Client
     status
         authentication request
@@ -37,28 +47,48 @@ Server to Client
                     data: "",
                 }
             }
-    status update
-        {
-            type: "status",
-            payload: {
-                name: "status update",
-                userID: "",
-                data: "authenticated",
+        status update
+            {
+                type: "status",
+                payload: {
+                    name: "status update",
+                    userID: "",
+                    data: "authenticated",
+                }
             }
-        }
-        {
-            type: "status",
-            payload: {
-                name: "status update",
-                userID: "",
-                data: "in queue",
+            {
+                type: "status",
+                payload: {
+                    name: "status update",
+                    userID: "",
+                    data: "in queue",
+                }
             }
-        }
-        {
-            type: "status",
-            payload: {
-                name: "status update",
-                userID: "",
-                data: "connected",
+            {
+                type: "status",
+                payload: {
+                    name: "status update",
+                    userID: "",
+                    data: "connected",
+                }
             }
-        }
+    game 
+        start game
+            {
+                type: "game",
+                payload: {
+                    name: "start game",
+                    userID: "",
+                    data: "b"    # "b" or "w"
+                }
+            }
+        move
+            {
+                type: "game",
+                payload: {
+                    name: "move",
+                    userID: "",
+                    data: JSON.stringify(move), #move: MoveType
+                }
+            }
+        

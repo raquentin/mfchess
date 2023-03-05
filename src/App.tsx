@@ -13,6 +13,7 @@ import Profile from "components/pages/profile/ProfileView";
 import Game from "components/pages/game/GameView";
 import Login from "components/Login"
 import ChatRoom from "components/ChatRoom";
+import { GameProvider } from "components/WebSocket";
 
 
 /* 
@@ -26,19 +27,21 @@ const App = (): JSX.Element => {
   //* render
   return (
     <UserProvider>
-      <ThemeColorContext.Provider value={themeColor}>
-        <AnimatePresence mode="wait">
-          <Routes key={location.pathname} location={location}>
-            <Route path="/" element={<Index />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/game" element={<Game />} />
-            
-            {/*! Temporary */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/chatroom" element={<ChatRoom />} />
-          </Routes>
-        </AnimatePresence>
-      </ThemeColorContext.Provider>
+      <GameProvider>
+        <ThemeColorContext.Provider value={themeColor}>
+          <AnimatePresence mode="wait">
+            <Routes key={location.pathname} location={location}>
+              <Route path="/" element={<Index />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/game" element={<Game />} />
+              
+              {/*! Temporary */}
+              <Route path="/login" element={<Login />} />
+              {/* <Route path="/chatroom" element={<ChatRoom />} /> */}
+            </Routes>
+          </AnimatePresence>
+        </ThemeColorContext.Provider>
+      </GameProvider>
     </UserProvider>
   );
   

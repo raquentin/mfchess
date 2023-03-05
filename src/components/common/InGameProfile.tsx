@@ -51,7 +51,7 @@ const InGameProfile = ({ userID, side, startedGame, isTurn }: Props): JSX.Elemen
     if(!isActive) return;
     const interval = setInterval(() => {
       const newTime = initialTimeAmount - (Date.now() - time);
-      console.log(newTime);
+      // console.log(newTime);
       if(newTime < 0) {
         setHours(0);
         setMinutes(0);
