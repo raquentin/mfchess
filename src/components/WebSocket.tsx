@@ -156,7 +156,7 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
     const makeMove = (move: MoveType) => {
         const chessGameCopy = new Chess(chessGame.fen());
         const result = chessGameCopy.move(move);
-        // setChessGame(chessGameCopy);
+        setChessGame(chessGameCopy);
         if (result) {
             ws.send(JSON.stringify({
                 type: "game",

@@ -37,7 +37,7 @@ const App = (): JSX.Element => {
               
               {/*! Temporary */}
               <Route path="/login" element={<Login />} />
-              <Route path="/chatroom" element={<ChatRoom />} />
+              {/* <Route path="/chatroom" element={<ChatRoom />} /> */}
             </Routes>
           </AnimatePresence>
         </ThemeColorContext.Provider>

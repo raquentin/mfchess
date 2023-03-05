@@ -1,8 +1,6 @@
 import { SetStateAction, useState } from "react";
 import {useUser} from "../context/UserContext";
 import styled from "styled-components";
-import ViewWrapper from "./common/ViewWrapper";
-import { PageContainer, PlayButton, RightSideContainer, TitleText } from "./pages/index/IndexView";
 import Payload from "./Payload";
 import { statusEnum, statusNumToDescription, useGame } from "./WebSocket";
 

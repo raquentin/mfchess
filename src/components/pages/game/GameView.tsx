@@ -58,7 +58,6 @@ const GameView = (): JSX.Element => {
     if(startGame === false) {
       return null;
     }
-    console.log("Color:", color)
     if (chess.turn() !== color) return false
     return makeMove(move)
   }
