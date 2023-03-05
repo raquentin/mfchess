@@ -16,3 +16,14 @@ export interface MoveType {
   to: string,
   promotion: string,
 }
+
+export interface SocketMoveType {
+  fen: string,
+  color: string,
+  piece: string,
+  from: string,
+  to: string,
+  san: string,
+  lan: string,
+  flags: string,
+}

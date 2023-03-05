@@ -33,7 +33,7 @@ Client to Server
                 payload: {
                     name: "move",
                     userID: "",
-                    data: JSON.stringify(move), #move: MoveType
+                    data: JSON.stringify(move), #move: SocketMoveType
                 }
             }
 Server to Client

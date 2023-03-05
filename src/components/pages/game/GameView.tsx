@@ -2,15 +2,12 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { Chessboard } from "react-chessboard";
-import { Chess } from 'chess.js';
 
 //* import local
 import ViewWrapper from "components/common/ViewWrapper";
-import { start } from "repl";
 import GameInformation from "components/common/GameInformation";
 import { MoveType } from "utils/interfaces";
 import InGameProfile from "components/common/InGameProfile";
-import { BoardPosition } from "react-chessboard/dist/chessboard/types";
 import { statusEnum, statusNumToDescription, useGame } from "components/WebSocket";
 import { useUser } from "context/UserContext";
 /*
@@ -20,10 +17,10 @@ import { useUser } from "context/UserContext";
 
 
 const GameView = (): JSX.Element => {
-  const [user, updateUser, fetchUser] = useUser()
+  const [user, ,] = useUser()
   // const [game, setGame] = useState(new Chess());
   const [startGame, setStartGame] = useState(false);
-  const [status, messages, color, chess, sendMessage, makeMove] = useGame()
+  const [status, , color, chess, sendMessage, makeMove] = useGame()
   const orientation = color === 'w' ? "white" : "black";
 
   if (user && user.loggedIn) {
@@ -138,12 +135,12 @@ const InfoContainer = styled.div`
     height: 250px;
   }
 `;
-const PlaceholderText = styled.p`
-  font-size: 2em;
-  color: white;
-  font-weight: 500;
-  margin 16px;
-`;
+// const PlaceholderText = styled.p`
+//   font-size: 2em;
+//   color: white;
+//   font-weight: 500;
+//   margin 16px;
+// `;
 
 const ChessBoardContainer = styled.div`
   height: 95%;
@@ -152,11 +149,11 @@ const ChessBoardContainer = styled.div`
   grid-row: 1 / 3;
 `;
 
-const ButtonContainer = styled.div`
-  height: 95%;
-  width: 95%;
-  background-color: black;
-`;
+// const ButtonContainer = styled.div`
+//   height: 95%;
+//   width: 95%;
+//   background-color: black;
+// `;
 
 const PlayButton = styled.button`
   background-color: black;

@@ -1,7 +1,7 @@
 import { useUser } from "context/UserContext";
 import React, { useContext, useState } from "react"
 import { MessageType, PayloadType } from "types/MessageType";
-import { MoveType } from "utils/interfaces";
+import { MoveType, SocketMoveType } from "utils/interfaces";
 import { Chess } from 'chess.js';
 
 
@@ -61,7 +61,7 @@ interface Props {
  * * Function that Wraps the context into a JSX element to abstract useContext.
  */
 export const GameProvider: React.FC<Props> = ({ children }) => {
-    const [user, updateUser, fetchUser] = useUser()
+    const [user, ,] = useUser()
     const [status, setStatus] = useState<number>(statusEnum.Connected);
     const [messages, setMessages] = useState<PayloadType[]>([])
     const [color, setColor] = useState<string>("")
@@ -77,9 +77,13 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
                 });
                 break;
             case "status":
-                if (!user) throw new Error("User undefined.")
-                if (!user.loggedIn) throw new Error("User not logged in.")
-                if (payload.name === "authentication request") {
+                if (!user) {
+                    // throw new Error("User undefined.")
+                    console.log("User undefined.")
+                } else if (!user.loggedIn) {
+                    // throw new Error("User not logged in.")
+                    console.log("User not logged in.")
+                } else if (payload.name === "authentication request") {
                     sendMessage({
                         type: "upgrade status",
                         payload: {
@@ -143,9 +147,8 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
                 if (payload.name === "start game") {
                     setColor(payload.data)
                 } else if (payload.name === "move"){
-                    const move = JSON.parse(payload.data);
-                    const chessGameCopy = new Chess(chessGame.fen());
-                    const result = chessGameCopy.move(move);
+                    const socketMove: SocketMoveType = JSON.parse(payload.data);
+                    const chessGameCopy = new Chess(socketMove.fen);
                     setChessGame(chessGameCopy);
                 }
                 break;
@@ -153,17 +156,23 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
         }
     }
 
+    // * the lastMove is slightly different from the .history notation of chess.js, we use the fen string 
+    // * of the board AFTER the move has been made.
     const makeMove = (move: MoveType) => {
         const chessGameCopy = new Chess(chessGame.fen());
         const result = chessGameCopy.move(move);
         setChessGame(chessGameCopy);
         if (result) {
+            const history = chessGameCopy.history({ verbose: true })
+            const lastMove: SocketMoveType = history[history.length - 1]
+            lastMove.fen = chessGameCopy.fen()
+            // console.log("Last:", lastMove)
             ws.send(JSON.stringify({
                 type: "game",
                 payload: {
                     name: "move",
                     userID: "",
-                    data: JSON.stringify(move),
+                    data: JSON.stringify(lastMove),
                 }
             }))
         }
