@@ -2,7 +2,7 @@ import { SetStateAction, useState } from "react";
 import {useUser} from "../context/UserContext";
 import styled from "styled-components";
 import Payload from "./Payload";
-import { statusEnum, statusNumToDescription, useGame } from "./WebSocket";
+import { statusEnum, statusNumToDescription, useGame } from "../context/WebSocket";
 
 
 

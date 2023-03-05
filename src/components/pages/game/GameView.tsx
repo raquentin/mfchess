@@ -8,7 +8,7 @@ import ViewWrapper from "components/common/ViewWrapper";
 import GameInformation from "components/common/GameInformation";
 import { MoveType } from "utils/interfaces";
 import InGameProfile from "components/common/InGameProfile";
-import { statusEnum, statusNumToDescription, useGame } from "components/WebSocket";
+import { statusEnum, statusNumToDescription, useGame } from "context/WebSocket";
 import { useUser } from "context/UserContext";
 /*
  * GameView is the head component for the game page (mfchess.com/game/{gameID}, or mrchess.com/game for now)
