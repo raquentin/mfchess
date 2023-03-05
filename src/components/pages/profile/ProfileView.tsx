@@ -1,12 +1,11 @@
 //* import third-party deps
 import styled from "styled-components";
+import { useRef, useState } from "react";
 
 //* import local
 import ViewWrapper from "components/common/ViewWrapper";
-import InGameProfile from "components/common/InGameProfile";
 import LogoPNG from "assets/user-profile-icon-free-vector.png";
 import Banner from "assets/banner.jpg";
-import EditPNG from "assets/edit.png";
 import USFlag from "assets/flags/United-States.png"
 
 /*
@@ -14,24 +13,57 @@ import USFlag from "assets/flags/United-States.png"
  @returns JSX.element jsx structure for the profile page
 */
 const ProfileView = (): JSX.Element => {
+  const btnDefaultText = "Edit Profile";
+  const btnSaveText = "Save Changes";
+
+  const [editMode, setEditMode] = useState(false);
+  const [btnText, setBtnText] = useState(btnDefaultText);
+
+  const uploadProfileBanner = useRef(document.createElement("input"));
+  const uploadProfileImage = useRef(document.createElement("input"));
+
+  function onEditButtonClick() {
+    if (editMode) {
+      setEditMode(false);
+      setBtnText(btnDefaultText);
+    } else {
+      setEditMode(true);
+      setBtnText(btnSaveText);
+    }
+  }
+
+  function onProfileImageClick() {
+    if (editMode) {
+      uploadProfileImage.current.click();
+    }
+  }
+
+  function onProfileBannerClick() {
+    if (editMode) {
+      uploadProfileBanner.current.click();
+    }
+  }
+
   //* render
   return (
     <ViewWrapper backgroundColor={"#333333"} hasNavbar> {/** holds animation and container logic*/}
+      <input ref={uploadProfileBanner} type={"file"} accept={"image/png, image/jpeg"} hidden={true}></input>
+      <input ref={uploadProfileImage} type={"file"} accept={"image/png, image/jpeg"} hidden={true}></input>
       <PageContainer>
         <BannerContainer>
-          <ProfileBanner src={Banner}></ProfileBanner>
+          <ProfileBanner src={Banner} onClick={onProfileBannerClick}></ProfileBanner>
         </BannerContainer>
         <BodyColor></BodyColor>
         <ProfileInformation>
-          <ProfileImage src={LogoPNG}></ProfileImage>
+          <ProfileImage src={LogoPNG} onClick={onProfileImageClick}></ProfileImage>
           <ProfileDetails>
-            <div>PlaceHolderName</div>
+            <ProfileName type="text" readOnly={!editMode} defaultValue={"PlaceHolderName"}></ProfileName>
             <FlagAndRatingContainer>
               <FlagIcon src={USFlag}></FlagIcon>
               <div>9999</div>
             </FlagAndRatingContainer>
             <div>"Freelo"</div>
-            <EditButton>Edit Profile</EditButton>
+            <EditButton onClick={onEditButtonClick}>{btnText}</EditButton>
           </ProfileDetails>
         </ProfileInformation>
       </PageContainer>
@@ -50,14 +82,18 @@ const PageContainer = styled.div`
 
 const BannerContainer = styled.div`
   height: 30%;
-  background-color: blue;
-`
+`;
 
 const ProfileBanner = styled.img`
   height: 100%;
   width: 100%;
   background-size: cover;
   background-repeat: no-repeat;
+
+  transition: all 0.4s ease;
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 const BodyColor = styled.div`
@@ -86,6 +122,11 @@ const ProfileImage = styled.img`
   background-repeat: no-repeat;
   background-size: cover;
   margin: 5px;
+
+  transition: all 0.4s ease;
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 const ProfileDetails = styled.div`
@@ -95,15 +136,28 @@ const ProfileDetails = styled.div`
   height: 95%;
 `;
 
+const ProfileName = styled.input`
+  background-color: transparent;
+  color: white;
+  font-size: 1vw;
+  font-weight: bold;
+  border: none;
+
+  &:focus {
+    background-color: #505050;
+    outline: none;
+  }
+`;
+
 const FlagAndRatingContainer = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 const FlagIcon = styled.img`
   height: 20px;
   padding: 2px;
-`
+`;
 
 const EditButton = styled.button`
   position: absolute;
