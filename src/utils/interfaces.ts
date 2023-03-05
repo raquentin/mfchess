@@ -11,7 +11,7 @@ export interface SVGProps {
   isBlack?: boolean
 }
 
-export interface Move {
+export interface MoveType {
   from: string,
   to: string,
   promotion: string,

@@ -8,8 +8,11 @@ import { Chess } from 'chess.js';
 import ViewWrapper from "components/common/ViewWrapper";
 import { start } from "repl";
 import GameInformation from "components/common/GameInformation";
-import { Move } from "utils/interfaces";
+import { MoveType } from "utils/interfaces";
 import InGameProfile from "components/common/InGameProfile";
+import { BoardPosition } from "react-chessboard/dist/chessboard/types";
+import { statusEnum, statusNumToDescription, useGame } from "components/WebSocket";
+import { useUser } from "context/UserContext";
 /*
  * GameView is the head component for the game page (mfchess.com/game/{gameID}, or mrchess.com/game for now)
  @returns JSX.element jsx structure for the profile page
@@ -17,21 +20,50 @@ import InGameProfile from "components/common/InGameProfile";
 
 
 const GameView = (): JSX.Element => {
-
-  const [game, setGame] = useState(new Chess());
+  const [user, updateUser, fetchUser] = useUser()
+  // const [game, setGame] = useState(new Chess());
   const [startGame, setStartGame] = useState(false);
-  
-  function makeAMove(move: Move) {
+  const [status, messages, color, chess, sendMessage, makeMove] = useGame()
+  const orientation = color === 'w' ? "white" : "black";
+
+  if (user && user.loggedIn) {
+    if (status === statusEnum.Connected) {
+        sendMessage({
+            type: "upgrade status",
+            payload: {
+                name: "authentication",
+                userID: "",
+                data: user.jwtCredential,
+            }
+        })
+    }
+    /**
+     * * This doesn't necessary need to be automatic, like in the future there might be options
+     * * to join different games and stuff. But for now it will be automatic
+     */
+    // if (status === statusEnum.Authenticated) {
+    //     sendMessage({
+    //         type: "upgrade status",
+    //         payload: {
+    //             name: "pairing",
+    //             userID: "",
+    //             data: "",
+    //         }
+    //     })
+    // }
+  }
+
+
+  const makeAMove = (move: MoveType) => {
     if(startGame === false) {
       return null;
     }
-    const gameCopy = new Chess(game.fen());
-    const result = gameCopy.move(move);
-    setGame(gameCopy);
-    return result; // null if the move was illegal, the move object if the move was legal
+    console.log("Color:", color)
+    if (chess.turn() !== color) return false
+    return makeMove(move)
   }
 
-  function onDrop(sourceSquare: string, targetSquare: string) {
+  const onDrop = (sourceSquare: string, targetSquare: string) => {
     const move = makeAMove({
       from: sourceSquare,
       to: targetSquare,
@@ -50,16 +82,21 @@ const GameView = (): JSX.Element => {
       <GameContainer>
         <ChessBoardContainer>
           <div>
-            <Chessboard position={game.fen()} onPieceDrop={onDrop} />
+            <Chessboard position={chess.fen()} onPieceDrop={onDrop} boardOrientation={orientation}/>
           </div>
         </ChessBoardContainer>
-        <PlayerContainer>
-          <InGameProfile userID={1} side="black" startedGame={startGame} isTurn={(game.turn() === 'b')} ></InGameProfile>
-          <InGameProfile userID={2} side="white" startedGame={startGame} isTurn={(game.turn() === 'w')} ></InGameProfile>
-        </PlayerContainer>
-        <InfoContainer>
-          {startGame ? <GameInformation></GameInformation> : <PlayButton onClick={() => setStartGame(true)} >Play</PlayButton>}
-        </InfoContainer>
+        {status === statusEnum.Paired ? 
+                <>
+                    <PlayerContainer>
+                      <InGameProfile userID={1} side="black" startedGame={startGame} isTurn={(chess.turn() === 'b')} ></InGameProfile>
+                      <InGameProfile userID={2} side="white" startedGame={startGame} isTurn={(chess.turn() === 'w')} ></InGameProfile>
+                    </PlayerContainer>
+                    <InfoContainer>
+                      {startGame ? <GameInformation></GameInformation> : <PlayButton onClick={() => setStartGame(true)} >Play</PlayButton>}
+                    </InfoContainer>
+                </>
+                : <StatusText>Status: {statusNumToDescription.get(status)}</StatusText> 
+        }
       </GameContainer>
     </ViewWrapper>
     );
@@ -134,4 +171,12 @@ const PlayButton = styled.button`
   &:hover {
     background-color: grey;
   }
+`;
+
+
+export const StatusText = styled.h1`
+  color: #EFC050;
+  font-size: 2em;
+  font-weight: 800;
+  margin: 0;
 `;

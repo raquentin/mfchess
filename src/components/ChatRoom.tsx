@@ -12,7 +12,7 @@ import { statusEnum, statusNumToDescription, useGame } from "./WebSocket";
 const ChatRoom: React.FunctionComponent = ()  => {
   const [user, updateUser, fetchUser] = useUser()
   const [inputText, setInputText] = useState<string>('');
-  const [status, messages, sendMessage] = useGame()
+  const [status, messages, color, chess, sendMessage, makeMove] = useGame()
 
 
   if (user && user.loggedIn) {
@@ -66,26 +66,20 @@ const ChatRoom: React.FunctionComponent = ()  => {
    * TODO make it automatically align to bottom of messages
    */
   return (
-        <ViewWrapper> {/** holds animation and container logic*/}
-            <PageContainer>
-            <RightSideContainer>
-                <TitleText>ChatRoom</TitleText>
-                {status === statusEnum.Paired ? 
-                <>
-                    <input type="text" value={inputText} onChange={handleInputChange} />
-                    <button onClick={handleButtonClick}> send </button>
-                    <MessageListColumn>
-                    {messages.map((payload, idx) => {
-                        return <Payload key={idx} payload={payload}></Payload>
-                    })}
-                    </MessageListColumn>
-                </>
-                : <StatusText>Status: {statusNumToDescription.get(status)}</StatusText> 
-                }
-            <PlayButton to="/">MAIN</PlayButton>
-            </RightSideContainer>
-            </PageContainer>
-        </ViewWrapper>
+    <>
+      {status === statusEnum.Paired ? 
+      <>
+          <input type="text" value={inputText} onChange={handleInputChange} />
+          <button onClick={handleButtonClick}> send </button>
+          <MessageListColumn>
+          {messages.map((payload, idx) => {
+              return <Payload key={idx} payload={payload}></Payload>
+          })}
+          </MessageListColumn>
+      </>
+      : <StatusText>Status: {statusNumToDescription.get(status)}</StatusText> 
+      } 
+    </>
   );
 }
 

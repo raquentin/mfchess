@@ -1,6 +1,8 @@
 import { useUser } from "context/UserContext";
 import React, { useContext, useState } from "react"
 import { MessageType, PayloadType } from "types/MessageType";
+import { MoveType } from "utils/interfaces";
+import { Chess } from 'chess.js';
 
 
 // * According to level, the larger the better
@@ -33,12 +35,19 @@ const sendMessage = (message: MessageType) => {
 }
 
 
+
 type gameContextType = [number, 
                         PayloadType[],
-                        ((message: MessageType) => void)]
+                        string,
+                        Chess,
+                        ((message: MessageType) => void),
+                        ((move: MoveType) => void)]
 
-const GameContext = React.createContext<gameContextType>([ 1, 
+const GameContext = React.createContext<gameContextType>([ 1,
                                                            [], 
+                                                           "",
+                                                           new Chess(),
+                                                           () => {},
                                                            () => {}])
 
 export const useGame = () => {
@@ -55,6 +64,8 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
     const [user, updateUser, fetchUser] = useUser()
     const [status, setStatus] = useState<number>(statusEnum.Connected);
     const [messages, setMessages] = useState<PayloadType[]>([])
+    const [color, setColor] = useState<string>("")
+    const [chessGame, setChessGame] = useState(new Chess());
 
     ws.onmessage = (byteString) => {
         const {type, payload} = JSON.parse(byteString.data);
@@ -128,16 +139,45 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
                     throw new Error("Unknown message")
                 }
                 break;
+            case "game":
+                if (payload.name === "start game") {
+                    setColor(payload.data)
+                } else if (payload.name === "move"){
+                    const move = JSON.parse(payload.data);
+                    const chessGameCopy = new Chess(chessGame.fen());
+                    const result = chessGameCopy.move(move);
+                    setChessGame(chessGameCopy);
+                }
+                break;
+            
         }
     }
 
+    const makeMove = (move: MoveType) => {
+        const chessGameCopy = new Chess(chessGame.fen());
+        const result = chessGameCopy.move(move);
+        // setChessGame(chessGameCopy);
+        if (result) {
+            ws.send(JSON.stringify({
+                type: "game",
+                payload: {
+                    name: "move",
+                    userID: "",
+                    data: JSON.stringify(move),
+                }
+            }))
+        }
+    }
 
     return (
         <GameContext.Provider 
             value={[
                 status, 
                 messages, 
-                sendMessage]}>
+                color,
+                chessGame,
+                sendMessage,
+                makeMove]}>
             {children}
         </GameContext.Provider>
     )
