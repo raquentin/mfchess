@@ -186,6 +186,7 @@ const GameLogInformation = styled.div`
     }
     .clock {
       font-size: 20px;
+      color: green;
     }
   }
 `;
