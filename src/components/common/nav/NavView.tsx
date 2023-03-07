@@ -66,7 +66,7 @@ const LogoButton = styled(Link)<{backgroundColor: string}>`
 
 
 const LogoImage = styled.img`
-  display: flex;
+  display: flex; //? needed?
   width: 3.5em;
 `;
 

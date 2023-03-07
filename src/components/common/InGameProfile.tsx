@@ -1,16 +1,21 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import LogoPNG from "assets/user-profile-icon-free-vector.png";
+import YourPFP from "assets/YourPFP.png";
+import TheirPFP from "assets/TheirPFP.jpeg";
+
 import Banner from "assets/banner.jpg";
 
 interface Props {
-  userID: Number;
-  side: String;
+  userID: number;
+  userName: string;
+  side: string;
   startedGame: boolean;
   isTurn: boolean;
+  backgroundColor: string;
+  lighterColorForText: string;
 }
 
-const InGameProfile = ({ userID, side, startedGame, isTurn }: Props): JSX.Element => {
+const InGameProfile = ({ userID, userName, side, startedGame, isTurn, backgroundColor, lighterColorForText }: Props): JSX.Element => {
 
   const [time, setTime] = useState(-1);
   const [pausedTime, setPausedTime] = useState(0);
@@ -82,93 +87,104 @@ const InGameProfile = ({ userID, side, startedGame, isTurn }: Props): JSX.Elemen
   }
 
   return (
-    <ProfileContainer>
-      <BannerContainer>
-        <ProfileBanner src={Banner} ></ProfileBanner>
-      </BannerContainer>
-      <BodyColor></BodyColor>
-      <ProfileInformation>
-        <ProfileImage src={LogoPNG} ></ProfileImage>
-        <ProfileDetails>
-          <div>PlaceHolderName</div>
-          <div>Rating: 9999</div>
-          <div>"Freelo"</div>
-        </ProfileDetails>
-      </ProfileInformation>
-      <GameInformation >
-        <TimerContainer>{standardizeTime()}</TimerContainer>
-      </GameInformation>
+    <ProfileContainer backgroundColor={backgroundColor}>
+      <StatsContainer>
+        <PFPImage src={YourPFP} />
+        <NotPFP>
+          <PlayerName>{userName}</PlayerName>
+          <EloText>1230</EloText>
+          <DescText lighterColorForText={lighterColorForText}>"I have stockfish open in another tab"</DescText>
+        </NotPFP>
+      </StatsContainer>
+      <TimeContainer>
+        <TimeText>{standardizeTime()}</TimeText>
+      </TimeContainer>
     </ProfileContainer>
+
+    // <ProfileContainer>
+    //   <BannerContainer>
+    //     <ProfileBanner src={Banner} ></ProfileBanner>
+    //   </BannerContainer>
+    //   <BodyColor></BodyColor>
+    //   <ProfileInformation>
+    //     <ProfileImage src={LogoPNG} ></ProfileImage>
+    //     <ProfileDetails>
+    //       <div>PlaceHolderName</div>
+    //       <div>Rating: 9999</div>
+    //       <div>"Freelo"</div>
+    //     </ProfileDetails>
+    //   </ProfileInformation>
+    //   <GameInformation >
+    //     <TimerContainer>{standardizeTime()}</TimerContainer>
+    //   </GameInformation>
+    // </ProfileContainer>
   )
 }
 
 export default InGameProfile
 
-const ProfileContainer = styled.div`
+/*
+ * ProfileContainer is the parent container for the entire profile card during games
+ TODO: pass background color based on user color preference
+*/
+const ProfileContainer = styled.div<{backgroundColor: string}>`
   position: relative;
-  height: 100%;
-  width: 48%;
-`;
-
-const BannerContainer = styled.div`
-  height: 30%;
-  background-color: blue;
-`;
-
-const ProfileBanner = styled.img`
-  height: 100%;
   width: 100%;
-  background-size: cover;
-  background-repeat: no-repeat;
-`;
-
-const BodyColor = styled.div`
-  height: 70%;
-  background-color: #287485;
-`;
-
-const ProfileInformation = styled.div`
-  position: absolute;
-  top: 15%;
-  left: 0; 
-  right: 0; 
-  margin-left: auto; 
-  margin-right: auto; 
-  background-color: #333333;
-  height: 32%;
-  width: 85%;
+  padding: 3.2em 1.3em 1.3em 1.3em;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: ${props => props.backgroundColor};
+  height: 13em;
 `;
 
-const ProfileImage = styled.img`
-  height: calc(100% - 10px);
-  aspect-ratio: 1 / 1;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  margin: 5px;
-`;
-
-const ProfileDetails = styled.div`
-  color: white;
-  font-weight: bold;
-  font-size: 1vw; 
-  height: 95%;
-`;
-
-const GameInformation = styled.div`
-  position: absolute;
-  top: 70%;
-  left: 0; 
-  right: 0; 
-  margin-left: auto; 
-  margin-right: auto;
+/*
+ * StatsContainer is the top part where the user pfp and elo, etc is
+*/
+const StatsContainer = styled.div`
   background-color: #333333;
-  height: 16%;
-  width: 85%;
+  display: flex;
+  gap: 0.2em;
+  max-height: 7em;
+`;
+const PlayerName = styled.h2`
+  margin: 0;
+  font-size: 1.3em;
+  color: white;
+`;
+const EloText = styled.h4`
+  margin: 0;
+  color: white;
+`;
+const DescText = styled.p<{lighterColorForText: string}>`
+  margin: 0;
+  color: ${props => props.lighterColorForText};
+  font-style: italic;
+`;
+const TimeText = styled.h2`
+  margin: 0;
+  color: black;
 `;
 
-const TimerContainer = styled.div`
-  color: white;
+/*
+ * TimeContainer is the bottom part with time left and captured pieces
+ TODO: make the background-color match the white/black side like the figma does
+*/
+const TimeContainer = styled.div`
+  background-color: #D9D9D9;
+`;
+const NotPFP = styled.div`
+  display: flex;
+  gap: 0.1em;
+  padding: 0.3em 0.2em 0.2em 0em;
+  flex-direction: column;
+`;
+const PFPImage = styled.img`
+  display: flex;
+  height: 100%;
+`;
+const BannerImage = styled.img`
+  position: absolute;
+  top: 0;
+  width: 100%;
 `;
