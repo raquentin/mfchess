@@ -78,7 +78,7 @@ const GameView = (): JSX.Element => {
       <GameContainer>
         <ChessBoardContainer>
           <div>
-            <Chessboard position={chess.fen()} onPieceDrop={onDrop} boardOrientation={orientation} arePremovesAllowed
+            <Chessboard position={chess.fen()} onPieceDrop={onDrop} boardOrientation={orientation}
             customLightSquareStyle={{backgroundColor: '#DCDCDC'}} customDarkSquareStyle={{backgroundColor: "#287485"}}/>
           </div>
         </ChessBoardContainer>
