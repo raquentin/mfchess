@@ -7,6 +7,8 @@ import styled from "styled-components";
 import ThemeColorContext from "context/colorContext";
 import LogoPNG from "assets/logo.png";
 import PlayButtonSVG from "assets/playbutton.svg";
+import ProfileButtonSVG from "assets/profilebutton.svg";
+
 
 /*
  * NavView is the parent nav component
@@ -25,6 +27,9 @@ const NavView = (): JSX.Element => {
       </LogoButton>
       <PlayButton to="/game" backgroundColor={themeColor}>
         <PlayButtonImage src={PlayButtonSVG} />
+      </PlayButton>
+      <PlayButton to="/profile" backgroundColor={themeColor}>
+        <PlayButtonImage src={ProfileButtonSVG} />
       </PlayButton>
     </NavContainer>
   );
@@ -66,7 +71,7 @@ const LogoButton = styled(Link)<{backgroundColor: string}>`
 
 
 const LogoImage = styled.img`
-  display: flex;
+  display: flex; //? needed?
   width: 3.5em;
 `;
 

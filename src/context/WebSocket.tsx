@@ -1,9 +1,24 @@
-import { useUser } from "context/UserContext";
-import React, { useContext, useState } from "react"
+import { defaultUser, useUser } from "context/UserContext";
+import React, { useContext, useEffect, useState } from "react"
 import { MessageType, PayloadType } from "types/MessageType";
 import { MoveType, SocketMoveType } from "utils/interfaces";
 import { Chess } from 'chess.js';
+import { UserType } from "types/UserType";
 
+const LOCALSTORAGE_CHESS_FEN = "save-chess-game";
+const savedChessFENString = localStorage.getItem(LOCALSTORAGE_CHESS_FEN);
+const savedChessFEN = savedChessFENString == null ? undefined : savedChessFENString
+
+const LOCALSTORAGE_COLOR = "save-color";
+const savedColor = localStorage.getItem(LOCALSTORAGE_COLOR);
+
+const LOCALSTORAGE_MESSAGES = "save-messages";
+const savedMessagesString = localStorage.getItem(LOCALSTORAGE_MESSAGES);
+const savedMessages: null | PayloadType[] = savedMessagesString == null ? null : JSON.parse(savedMessagesString)
+
+const LOCALSTORAGE_OPPONENT = "save-opponent";
+const savedOpponentString = localStorage.getItem(LOCALSTORAGE_OPPONENT);
+const savedOpponent: null | UserType = savedOpponentString == null ? null : JSON.parse(savedOpponentString)
 
 // * According to level, the larger the better
 export const statusEnum = {
@@ -25,28 +40,28 @@ export const statusNumToDescription = new Map<number, string>([
     [4, "Paired with opponent"],
 ]);
 
-const ws: WebSocket = new WebSocket('ws://localhost:4000')
-
-ws.onopen = () => {
-    console.log("connected")
-}
-const sendMessage = (message: MessageType) => {
-    ws.send(JSON.stringify(message));
-}
+const ws: WebSocket = new WebSocket('ws:///86.48.25.224:4000');
+console.log("NewSocket!!");
 
 
 
-type gameContextType = [number, 
+type gameContextType = [boolean,
+                        number, 
                         PayloadType[],
                         string,
                         Chess,
+                        UserType,
                         ((message: MessageType) => void),
-                        ((move: MoveType) => void)]
+                        ((move: MoveType) => void),
+                        (() => void)]
 
-const GameContext = React.createContext<gameContextType>([ 1,
+const GameContext = React.createContext<gameContextType>([ false,
+                                                           1,
                                                            [], 
                                                            "",
                                                            new Chess(),
+                                                           defaultUser,
+                                                           () => {},
                                                            () => {},
                                                            () => {}])
 
@@ -63,18 +78,38 @@ interface Props {
 export const GameProvider: React.FC<Props> = ({ children }) => {
     const [user, ,] = useUser()
     const [status, setStatus] = useState<number>(statusEnum.Connected);
-    const [messages, setMessages] = useState<PayloadType[]>([])
-    const [color, setColor] = useState<string>("")
-    const [chessGame, setChessGame] = useState(new Chess());
+    const [messages, setMessages] = useState<PayloadType[]>(savedMessages || [])
+    const [color, setColor] = useState<string>(savedColor || "")
+    const [chessGame, setChessGame] = useState(new Chess(savedChessFEN));
+    const [isConnected, setIsConnected] = useState<boolean>(false)
+    const [opponent, setOpponent] = useState<UserType>(savedOpponent || defaultUser)
 
+    const clearLocalStorage = () => {
+        localStorage.setItem(LOCALSTORAGE_CHESS_FEN, "");
+        localStorage.setItem(LOCALSTORAGE_COLOR, "");
+        localStorage.setItem(LOCALSTORAGE_MESSAGES, "");
+        localStorage.setItem(LOCALSTORAGE_OPPONENT, "");
+    }
+
+    ws.onopen = () => {
+        console.log("connected")
+        setIsConnected(true)
+    }
+    const sendMessage = (message: MessageType) => {
+        ws.send(JSON.stringify(message));
+    }
     ws.onmessage = (byteString) => {
         const {type, payload} = JSON.parse(byteString.data);
         switch (type) {
             case "chat":
                 setMessages(messages => {
                     const newmessage: PayloadType[] = [...messages, payload]
+
+                    localStorage.setItem(LOCALSTORAGE_MESSAGES, JSON.stringify(newmessage));
                     return newmessage
                 });
+
+                
                 break;
             case "status":
                 if (!user) {
@@ -99,6 +134,7 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
                             if (status <= 3) return statusEnum.Paired
                             return status
                         })
+                        // fetchCurrentBoard (if not yet then server return start game message)
                     } else if (payload.data === "in queue") {
                         console.log("Waiting in queue")
                         setStatus(status => {
@@ -145,11 +181,25 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
                 break;
             case "game":
                 if (payload.name === "start game") {
+                    setOpponent(payload.userID) // * not an userID but actually UserType
+                    localStorage.setItem(LOCALSTORAGE_OPPONENT, JSON.stringify(payload.userID));
+                    
                     setColor(payload.data)
+                    localStorage.setItem(LOCALSTORAGE_COLOR, payload.data);
+                    
+                    const newGame = new Chess()
+                    setChessGame(newGame);
+                    localStorage.setItem(LOCALSTORAGE_CHESS_FEN, newGame.fen());
+                    
+                    localStorage.setItem(LOCALSTORAGE_MESSAGES, "");
+
+
                 } else if (payload.name === "move"){
                     const socketMove: SocketMoveType = JSON.parse(payload.data);
                     const chessGameCopy = new Chess(socketMove.fen);
                     setChessGame(chessGameCopy);
+                    localStorage.setItem(LOCALSTORAGE_CHESS_FEN, chessGameCopy.fen());
+
                 }
                 break;
             
@@ -159,9 +209,11 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
     // * the lastMove is slightly different from the .history notation of chess.js, we use the fen string 
     // * of the board AFTER the move has been made.
     const makeMove = (move: MoveType) => {
+        console.log("Move:", move)
         const chessGameCopy = new Chess(chessGame.fen());
         const result = chessGameCopy.move(move);
         setChessGame(chessGameCopy);
+        localStorage.setItem(LOCALSTORAGE_CHESS_FEN, chessGameCopy.fen());
         if (result) {
             const history = chessGameCopy.history({ verbose: true })
             const lastMove: SocketMoveType = history[history.length - 1]
@@ -181,12 +233,15 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
     return (
         <GameContext.Provider 
             value={[
+                isConnected,
                 status, 
                 messages, 
                 color,
                 chessGame,
+                opponent,
                 sendMessage,
-                makeMove]}>
+                makeMove,
+                clearLocalStorage]}>
             {children}
         </GameContext.Provider>
     )

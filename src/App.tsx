@@ -13,7 +13,7 @@ import Profile from "components/pages/profile/ProfileView";
 import Game from "components/pages/game/GameView";
 import Login from "components/Login"
 import ChatRoom from "components/ChatRoom";
-import { GameProvider } from "components/WebSocket";
+import { GameProvider } from "context/WebSocket";
 
 
 /* 
