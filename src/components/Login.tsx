@@ -1,3 +1,4 @@
+import { useGame } from "context/WebSocket";
 import { SetStateAction, useEffect, useState } from "react";
 import {useNavigate} from 'react-router-dom';
 import {defaultUser, useUser} from "../context/UserContext";
@@ -12,6 +13,7 @@ import AxiosInstance from "../utils/axiosInstance";
 const Login: React.FunctionComponent = ()  => {
   const [user, updateUser, fetchUser] = useUser()
   const navigate = useNavigate();
+  const [,,,,,,,, clearLocalStorage] = useGame()
   
   /**
    * * Takes in credential String from google after logging in, pass to backed for decode, then
@@ -45,6 +47,7 @@ const Login: React.FunctionComponent = ()  => {
     window.google.accounts.id.disableAutoSelect();
     updateUser!((user: UserType) => defaultUser())
     navigate('/', {replace: true});
+    clearLocalStorage()
   }
   
   /**

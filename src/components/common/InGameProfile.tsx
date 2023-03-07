@@ -2,15 +2,18 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import LogoPNG from "assets/user-profile-icon-free-vector.png";
 import Banner from "assets/banner.jpg";
+import { useGame } from "context/WebSocket";
+import { UserType } from "types/UserType";
 
 interface Props {
   userID: Number;
   side: String;
   startedGame: boolean;
   isTurn: boolean;
+  player: UserType;
 }
 
-const InGameProfile = ({ userID, side, startedGame, isTurn }: Props): JSX.Element => {
+const InGameProfile = ({ userID, side, startedGame, isTurn, player }: Props): JSX.Element => {
 
   const [time, setTime] = useState(-1);
   const [pausedTime, setPausedTime] = useState(0);
@@ -18,6 +21,8 @@ const InGameProfile = ({ userID, side, startedGame, isTurn }: Props): JSX.Elemen
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
+
+
   const initialTimeAmount: number = 300000;
 
   useEffect(() => {
@@ -88,11 +93,11 @@ const InGameProfile = ({ userID, side, startedGame, isTurn }: Props): JSX.Elemen
       </BannerContainer>
       <BodyColor></BodyColor>
       <ProfileInformation>
-        <ProfileImage src={LogoPNG} ></ProfileImage>
+        <ProfileImage src={player.profilePictureUrl} ></ProfileImage>
         <ProfileDetails>
-          <div>PlaceHolderName</div>
-          <div>Rating: 9999</div>
-          <div>"Freelo"</div>
+          <div>{player.name}</div>
+          {/* <div>Rating: 9999</div>
+          <div>"Freelo"</div> */}
         </ProfileDetails>
       </ProfileInformation>
       <GameInformation >
