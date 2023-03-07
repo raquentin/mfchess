@@ -1,6 +1,8 @@
 //* import third-party deps
 import styled from "styled-components";
 import { useRef, useState } from "react";
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 
 //* import local
 import ViewWrapper from "components/common/ViewWrapper";
@@ -66,6 +68,9 @@ const ProfileView = (): JSX.Element => {
             <EditButton onClick={onEditButtonClick}>{btnText}</EditButton>
           </ProfileDetails>
         </ProfileInformation>
+        <GameLogInformation>
+          <GameLogTable />
+        </GameLogInformation>
       </PageContainer>
     </ViewWrapper>
   );
@@ -148,6 +153,98 @@ const ProfileName = styled.input`
     outline: none;
   }
 `;
+
+const GameLogInformation = styled.div`
+  position: absolute;
+  top: 40%;
+  left: 0; 
+  right: 0; 
+  margin-left: 5%; 
+  margin-right: auto; 
+  background-color: #333333;
+  height: 25%;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    th {
+      background-color: #444444;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      padding: 8px;
+    }
+    td {
+      color: #fff;
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+      border: none;
+    }
+    .clock {
+      font-size: 20px;
+    }
+  }
+`;
+
+const GameLogTable = () => {
+  const data = [
+    {
+      id: 1,
+      players: "Player 1 vs Player 2",
+      result: "1-0",
+      accuracy: "89%",
+      moves: "28",
+      date: "2022-02-28"
+    },
+    {
+      id: 2,
+      players: "Player 3 vs Player 4",
+      result: "0-1",
+      accuracy: "76%",
+      moves: "42",
+      date: "2022-02-25"
+    },
+    {
+      id: 3,
+      players: "Player 5 vs Player 6",
+      result: "1/2-1/2",
+      accuracy: "94%",
+      moves: "50",
+      date: "2022-02-21"
+    }
+  ];
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Players</th>
+          <th>Result</th>
+          <th>Accuracy</th>
+          <th>Moves</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((item) => (
+          <tr key={item.id}>
+            <td><span className="clock">&#x23F1;</span></td>
+            <td>{item.players}</td>
+            <td>{item.result}</td>
+            <td>{item.accuracy}</td>
+            <td>{item.moves}</td>
+            <td>{item.date}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
 
 const FlagAndRatingContainer = styled.div`
   display: flex;
