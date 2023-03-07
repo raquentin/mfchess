@@ -199,7 +199,8 @@ const GameLogTable = () => {
       result: "1-0",
       accuracy: "89%",
       moves: "28",
-      date: "2022-02-28"
+      date: "2022-02-28",
+      winner: 1
     },
     {
       id: 2,
@@ -207,7 +208,8 @@ const GameLogTable = () => {
       result: "0-1",
       accuracy: "76%",
       moves: "42",
-      date: "2022-02-25"
+      date: "2022-02-25",
+      winner: 2
     },
     {
       id: 3,
@@ -215,9 +217,18 @@ const GameLogTable = () => {
       result: "1/2-1/2",
       accuracy: "94%",
       moves: "50",
-      date: "2022-02-21"
+      date: "2022-02-21",
+      winner: 0
     }
   ];
+
+  const getResultSquare = (winner: any) => {
+    if (winner === 1) {
+      return <span style={{backgroundColor: "green"}}>&#x2B;</span>;
+    } else if (winner === 2) {
+      return <span style={{backgroundColor: "red"}}>&#x2212;</span>;
+    }
+  };
 
   return (
     <table>
@@ -236,7 +247,10 @@ const GameLogTable = () => {
           <tr key={item.id}>
             <td><span className="clock">&#x23F1;</span></td>
             <td>{item.players}</td>
-            <td>{item.result}</td>
+            <td>
+              {item.result}{" "}
+              {getResultSquare(item.winner)}
+            </td>
             <td>{item.accuracy}</td>
             <td>{item.moves}</td>
             <td>{item.date}</td>
