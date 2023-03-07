@@ -10,6 +10,7 @@ export interface UserType {
     name: string;
     email: string;
     profilePictureUrl: string;
+    color?: string;
     bannerPictureUrl?: string;
     elo?: number;
     country?: string;

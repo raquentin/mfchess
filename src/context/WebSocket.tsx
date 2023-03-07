@@ -60,7 +60,7 @@ const GameContext = React.createContext<gameContextType>([ false,
                                                            [], 
                                                            "",
                                                            new Chess(),
-                                                           defaultUser(),
+                                                           defaultUser,
                                                            () => {},
                                                            () => {},
                                                            () => {}])
@@ -82,7 +82,7 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
     const [color, setColor] = useState<string>(savedColor || "")
     const [chessGame, setChessGame] = useState(new Chess(savedChessFEN));
     const [isConnected, setIsConnected] = useState<boolean>(false)
-    const [opponent, setOpponent] = useState<UserType>(savedOpponent || defaultUser())
+    const [opponent, setOpponent] = useState<UserType>(savedOpponent || defaultUser)
 
     const clearLocalStorage = () => {
         localStorage.setItem(LOCALSTORAGE_CHESS_FEN, "");
