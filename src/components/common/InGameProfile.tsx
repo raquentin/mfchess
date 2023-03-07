@@ -89,13 +89,13 @@ const InGameProfile = ({ userID, side, startedGame, isTurn, player }: Props): JS
   }
 
   return (
-    <ProfileContainer backgroundColor={"lightblue"}>
+    <ProfileContainer backgroundColor={"#287485"}>
       <StatsContainer>
         <PFPImage src={player.profilePictureUrl} />
         <NotPFP>
           <PlayerName>{player.name}</PlayerName>
           <EloText>{1230}</EloText>
-          <DescText lighterColorForText={"lightblue"}>"I have stockfish open in another tab"</DescText>
+          <DescText lighterColorForText={"#b4e6f1"}>"I have stockfish open in another tab"</DescText>
         </NotPFP>
       </StatsContainer>
       <TimeContainer>
@@ -174,6 +174,11 @@ const TimeText = styled.h2`
 */
 const TimeContainer = styled.div`
   background-color: #D9D9D9;
+  height: 3em;
+  display: flex;
+  padding: 0em 0.5em;
+  align-items: center;
+  justify-content: space-between;
 `;
 const NotPFP = styled.div`
   display: flex;
