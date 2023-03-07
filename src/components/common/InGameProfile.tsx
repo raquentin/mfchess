@@ -4,18 +4,18 @@ import YourPFP from "assets/YourPFP.png";
 import TheirPFP from "assets/TheirPFP.jpeg";
 
 import Banner from "assets/banner.jpg";
+import { useGame } from "context/WebSocket";
+import { UserType } from "types/UserType";
 
 interface Props {
   userID: number;
-  userName: string;
   side: string;
   startedGame: boolean;
   isTurn: boolean;
-  backgroundColor: string;
-  lighterColorForText: string;
+  player: UserType;
 }
 
-const InGameProfile = ({ userID, userName, side, startedGame, isTurn, backgroundColor, lighterColorForText }: Props): JSX.Element => {
+const InGameProfile = ({ userID, side, startedGame, isTurn, player }: Props): JSX.Element => {
 
   const [time, setTime] = useState(-1);
   const [pausedTime, setPausedTime] = useState(0);
@@ -23,6 +23,8 @@ const InGameProfile = ({ userID, userName, side, startedGame, isTurn, background
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
+
+
   const initialTimeAmount: number = 300000;
 
   useEffect(() => {
@@ -87,13 +89,13 @@ const InGameProfile = ({ userID, userName, side, startedGame, isTurn, background
   }
 
   return (
-    <ProfileContainer backgroundColor={backgroundColor}>
+    <ProfileContainer backgroundColor={"lightblue"}>
       <StatsContainer>
-        <PFPImage src={YourPFP} />
+        <PFPImage src={player.profilePictureUrl} />
         <NotPFP>
-          <PlayerName>{userName}</PlayerName>
-          <EloText>1230</EloText>
-          <DescText lighterColorForText={lighterColorForText}>"I have stockfish open in another tab"</DescText>
+          <PlayerName>{player.name}</PlayerName>
+          <EloText>{1230}</EloText>
+          <DescText lighterColorForText={"lightblue"}>"I have stockfish open in another tab"</DescText>
         </NotPFP>
       </StatsContainer>
       <TimeContainer>

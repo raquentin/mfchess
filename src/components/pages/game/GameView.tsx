@@ -8,7 +8,7 @@ import ViewWrapper from "components/common/ViewWrapper";
 import GameInformation from "components/common/GameInformation";
 import { MoveType } from "utils/interfaces";
 import InGameProfile from "components/common/InGameProfile";
-import { statusEnum, statusNumToDescription, useGame } from "components/WebSocket";
+import { statusEnum, statusNumToDescription, useGame } from "context/WebSocket";
 import { useUser } from "context/UserContext";
 /*
  * GameView is the head component for the game page (mfchess.com/game/{gameID}, or mrchess.com/game for now)
@@ -20,11 +20,13 @@ const GameView = (): JSX.Element => {
   const [user, ,] = useUser()
   // const [game, setGame] = useState(new Chess());
   const [startGame, setStartGame] = useState(false);
-  const [status, , color, chess, sendMessage, makeMove] = useGame()
+  const [isConnected, status, , color, chess, opponent, sendMessage, makeMove, clearLocalStorage] = useGame()
   const orientation = color === 'w' ? "white" : "black";
 
   if (user && user.loggedIn) {
-    if (status === statusEnum.Connected) {
+    if (isConnected) {
+      if (status === statusEnum.Connected) {
+        console.log("HHHHAAA")
         sendMessage({
             type: "upgrade status",
             payload: {
@@ -33,6 +35,7 @@ const GameView = (): JSX.Element => {
                 data: user.jwtCredential,
             }
         })
+      }
     }
     /**
      * * This doesn't necessary need to be automatic, like in the future there might be options
@@ -52,6 +55,7 @@ const GameView = (): JSX.Element => {
 
 
   const makeAMove = (move: MoveType) => {
+    console.log("mackmo", startGame, chess.turn(), color)
     if(startGame === false) {
       return null;
     }
@@ -87,11 +91,9 @@ const GameView = (): JSX.Element => {
               <NonBoardPart>
                 <PlayerContainer>
                   <InGameProfile userID={1} side="black" startedGame={startGame}
-                    isTurn={(chess.turn() === 'b')} backgroundColor="#287485"
-                    lighterColorForText="#90E5F8" userName={user.name}/>
+                    isTurn={(chess.turn() === 'b')} player={user!}/>
                   <InGameProfile userID={2} side="white" startedGame={startGame}
-                    isTurn={(chess.turn() === 'w')} backgroundColor="#785C9A"
-                    lighterColorForText="#D8B9FF" userName="Opponent12"/>
+                    isTurn={(chess.turn() === 'w')} player={opponent}/>
                 </PlayerContainer>
                 <InfoContainer>
                   {startGame ? <GameInformation></GameInformation> : <PlayButton onClick={() => setStartGame(true)} >queue for 5+0</PlayButton>}

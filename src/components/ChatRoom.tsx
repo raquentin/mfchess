@@ -2,7 +2,7 @@ import { SetStateAction, useState } from "react";
 import {useUser} from "../context/UserContext";
 import styled from "styled-components";
 import Payload from "./Payload";
-import { statusEnum, statusNumToDescription, useGame } from "./WebSocket";
+import { statusEnum, statusNumToDescription, useGame } from "../context/WebSocket";
 
 
 
@@ -10,35 +10,35 @@ import { statusEnum, statusNumToDescription, useGame } from "./WebSocket";
 const ChatRoom: React.FunctionComponent = ()  => {
   const [user, updateUser, fetchUser] = useUser()
   const [inputText, setInputText] = useState<string>('');
-  const [status, messages, color, chess, sendMessage, makeMove] = useGame()
+  const [isConnected, status, messages, color, chess,, sendMessage, makeMove] = useGame()
 
 
-  if (user && user.loggedIn) {
-    if (status === statusEnum.Connected) {
-        sendMessage({
-            type: "upgrade status",
-            payload: {
-                name: "authentication",
-                userID: "",
-                data: user.jwtCredential,
-            }
-        })
-    }
-    /**
-     * * This doesn't necessary need to be automatic, like in the future there might be options
-     * * to join different games and stuff. But for now it will be automatic
-     */
-    // if (status === statusEnum.Authenticated) {
-    //     sendMessage({
-    //         type: "upgrade status",
-    //         payload: {
-    //             name: "pairing",
-    //             userID: "",
-    //             data: "",
-    //         }
-    //     })
-    // }
-  }
+  // if (user && user.loggedIn) {
+  //   if (status === statusEnum.Connected) {
+  //       sendMessage({
+  //           type: "upgrade status",
+  //           payload: {
+  //               name: "authentication",
+  //               userID: "",
+  //               data: user.jwtCredential,
+  //           }
+  //       })
+  //   }
+  //   /**
+  //    * * This doesn't necessary need to be automatic, like in the future there might be options
+  //    * * to join different games and stuff. But for now it will be automatic
+  //    */
+  //   // if (status === statusEnum.Authenticated) {
+  //   //     sendMessage({
+  //   //         type: "upgrade status",
+  //   //         payload: {
+  //   //             name: "pairing",
+  //   //             userID: "",
+  //   //             data: "",
+  //   //         }
+  //   //     })
+  //   // }
+  // }
   
   const handleInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
     setInputText(event.target.value);
