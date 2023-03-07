@@ -78,7 +78,8 @@ const GameView = (): JSX.Element => {
       <GameContainer>
         <ChessBoardContainer>
           <div>
-            <Chessboard position={chess.fen()} onPieceDrop={onDrop} boardOrientation={orientation}/>
+            <Chessboard position={chess.fen()} onPieceDrop={onDrop} boardOrientation={orientation} arePremovesAllowed
+            customLightSquareStyle={{backgroundColor: '#DCDCDC'}} customDarkSquareStyle={{backgroundColor: "#287485"}}/>
           </div>
         </ChessBoardContainer>
         {status === statusEnum.Paired ? 

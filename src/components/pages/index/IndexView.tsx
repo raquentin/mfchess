@@ -5,12 +5,17 @@ import styled from "styled-components";
 //* import local
 import ViewWrapper from "components/common/ViewWrapper";
 import LogoPNG from "assets/logo.png";
+import { useUser } from "context/UserContext";
 
 /*
  * IndexView is the head component for the index page (mfchess.com/)
  @returns JSX.element jsx structure for the index page
 */
 const IndexView = (): JSX.Element => {
+  const [user, ,] = useUser();
+
+  console.log("User: ", user);
+
   //* render
   return (
     <ViewWrapper> {/** holds animation and container logic*/}

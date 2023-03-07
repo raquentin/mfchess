@@ -1,12 +1,12 @@
 //* import third-party deps
-import { ReactNode, useContext } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 //* import local
 import ThemeColorContext from "context/colorContext";
 import LogoPNG from "assets/logo.png";
-
+import PlayButtonSVG from "assets/playbutton.svg";
 
 /*
  * NavView is the parent nav component
@@ -23,7 +23,9 @@ const NavView = (): JSX.Element => {
       <LogoButton to="/" backgroundColor={themeColor}>
         <LogoImage src={LogoPNG}/>
       </LogoButton>
-      <SwitchPage to="/game">Play Game</SwitchPage>
+      <PlayButton to="/game" backgroundColor={themeColor}>
+        <PlayButtonImage src={PlayButtonSVG} />
+      </PlayButton>
     </NavContainer>
   );
 }
@@ -45,7 +47,9 @@ const NavContainer = styled.div`
   width: 5.5em;
   background-color: #222222;
 `;
-const LogoButton = styled(Link)< {backgroundColor: string} >`
+
+
+const LogoButton = styled(Link)<{backgroundColor: string}>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,19 +63,28 @@ const LogoButton = styled(Link)< {backgroundColor: string} >`
     background-color: #888888;
   }
 `;
+
+
 const LogoImage = styled.img`
   display: flex;
   width: 3.5em;
 `;
-const SwitchPage = styled(Link)`
-  text-decoration: none;
-  height: 50px;
-  background-color: #EEEEEE;
-  color: #333333;
+
+
+const PlayButton = styled(Link)<{backgroundColor: string}>`
+  width: 100%;
+  aspect-ratio: 1;
+  background-color: ${props => props.backgroundColor};
   display: flex;
-  text-align: center;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+
+  transition: all 0.3s ease;
+  &:hover {
+    background-color: #888888;
+  }
 `;
 
+const PlayButtonImage = styled.img`
+  width: 75%;
+`;
