@@ -71,7 +71,6 @@ const GameView = (): JSX.Element => {
     return true;
   }
 
-
   //* render
   return (
     <ViewWrapper backgroundColor={"#333333"} hasNavbar> {/** holds animation and container logic*/}

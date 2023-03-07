@@ -1,16 +1,26 @@
+//* import third-party deps
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 import { SetStateAction, useEffect, useState } from "react";
 import {useNavigate} from 'react-router-dom';
-import {defaultUser, useUser} from "../context/UserContext";
-import {UserType} from "../types/UserType"
+import {defaultUser, useUser} from "context/UserContext";
+import {UserType} from "types/UserType"
 
-import AxiosInstance from "../utils/axiosInstance";
+import AxiosInstance from "utils/axiosInstance";
 
-/**
- * * FC for login button, the prompt also pops up if not currently logged in.
- * TODO: let prompt pop up in other places (ex: main page)
- */
-const Login: React.FunctionComponent = ()  => {
-  const [user, updateUser, fetchUser] = useUser()
+
+
+//* import local
+
+/*
+ * IndexView is the head component for the index page (mfchess.com/)
+ @returns JSX.element jsx structure for the index page
+*/
+const LogInOutButton: React.FunctionComponent = (): JSX.Element => {
+  const [user, updateUser, fetchUser] = useUser();
+
+  console.log("User: ", user);
+
   const navigate = useNavigate();
   
   /**
@@ -43,8 +53,10 @@ const Login: React.FunctionComponent = ()  => {
    */
   const signOut = () => {
     window.google.accounts.id.disableAutoSelect();
-    updateUser!((user: UserType) => defaultUser)
+    updateUser!((user: UserType) => defaultUser);
     navigate('/', {replace: true});
+    user.loggedIn = false;
+    console.log(user)
   }
   
   /**
@@ -72,15 +84,58 @@ const Login: React.FunctionComponent = ()  => {
     }
   },[])
 
-  /**
-   * * Show Login button if not logged in, else shows logout button.
-   * TODO Make logout look better! as well as the whole page!!
-   */
+
+  //* render
   return (
-    <div>
-      {user!.loggedIn ? <button onClick={signOut}> Logout </button> : <div id="buttonDiv"></div>}
-    </div>
+    <>
+      {user!.loggedIn
+      ? (
+        <PlayButtonFake onClick={signOut}>logout</PlayButtonFake>
+      )
+      : (
+        <PlayButton to="/login">login</PlayButton>
+      )}
+    </>
+    
   );
 }
 
-export default Login;
+export default LogInOutButton;
+
+
+//lines below this point are styled-components logic
+
+/*
+ * PlayButton is the play button that extends the react-router-dom Link component
+ TODO: make the hover effect better
+*/
+export const PlayButton = styled(Link)`
+  background-color: #333333;
+  border: 0.22em solid black;
+  border-radius: 14px;
+  color: white;
+  font-size: 3em;
+  font-weight: 800;
+  text-decoration: none;
+  padding: 0.25em 0.5em;
+
+  transition: all 0.3s ease;
+  &:hover {
+    background-color: #287485;
+  }
+`;
+export const PlayButtonFake = styled.div`
+  background-color: #333333;
+  border: 0.22em solid black;
+  border-radius: 14px;
+  color: white;
+  font-size: 3em;
+  font-weight: 800;
+  text-decoration: none;
+  padding: 0.25em 0.5em;
+
+  transition: all 0.3s ease;
+  &:hover {
+    background-color: #287485;
+  }
+`;

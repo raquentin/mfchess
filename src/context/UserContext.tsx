@@ -8,11 +8,9 @@ import AxiosInstance from "../utils/axiosInstance";
  * ? Not sure if the undefined thing is the best solution,
  * ? this causes the need to use null-assertion (!).
  */
-type userContextType = [UserType | undefined, 
+type userContextType = [UserType, 
                         React.Dispatch<React.SetStateAction<UserType>> | undefined,
                         (() => void) | undefined]
-
-const UserContext = React.createContext<userContextType>([undefined, undefined, undefined])
 
 /**
  * * Function to grab UserContext from outside scripts
@@ -25,21 +23,28 @@ export const useUser = () => {
 interface Props {
     children: React.ReactNode;
 }
-export const defaultUser = () => {
-    return {loggedIn: false,
-            userID: "",
-            jwtCredential: "",
 
-            name: "",
-            email: "",
-            profilePictureUrl: "",
-        }
+export const defaultUser: UserType = {
+  loggedIn: false,
+  userID: "0",
+  jwtCredential: "",
+
+  name: "Default User",
+  email: "",
+  profilePictureUrl: "",
+  bannerPictureUrl: "",
+  elo: 1000,
+  country: "usa",
+  description: "This is the default user description hellooooo"
 }
+
+const UserContext = React.createContext<userContextType>([defaultUser, undefined, undefined])
+
 /**
  * * Function that Wraps the context into a JSX element to abstract useContext.
  */
 export const UserProvider: React.FC<Props> = ({ children }) => {
-    const [user, setUser] = useState<UserType>(defaultUser());
+    const [user, setUser] = useState<UserType>(defaultUser);
 
     /**
      * 

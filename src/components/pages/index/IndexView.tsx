@@ -6,15 +6,13 @@ import styled from "styled-components";
 import ViewWrapper from "components/common/ViewWrapper";
 import LogoPNG from "assets/logo.png";
 import { useUser } from "context/UserContext";
+import LogInOutButton from "./LogInOutButton";
 
 /*
  * IndexView is the head component for the index page (mfchess.com/)
  @returns JSX.element jsx structure for the index page
 */
 const IndexView = (): JSX.Element => {
-  const [user, ,] = useUser();
-
-  console.log("User: ", user);
 
   //* render
   return (
@@ -25,7 +23,7 @@ const IndexView = (): JSX.Element => {
           <TitleText>mfChess</TitleText>
           <ButtonContainer>
             <PlayButton to="/game">play</PlayButton>
-            <PlayButton to="/login">login</PlayButton>
+            <LogInOutButton />
             {/* <PlayButton to="/chatroom">chatroom</PlayButton> */}
           </ButtonContainer>
         </RightSideContainer>
@@ -103,6 +101,8 @@ export const ButtonContainer = styled.div`
 /*
  * PlayButton is the play button that extends the react-router-dom Link component
  TODO: make the hover effect better
+ ! Update LogInOutButton if you change this.
+ TODO: Modularize this so you dont have to manually update
 */
 export const PlayButton = styled(Link)`
   background-color: #333333;
