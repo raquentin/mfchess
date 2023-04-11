@@ -71,8 +71,8 @@ const ProfileView = (): JSX.Element => {
         <GameLogInformation>
           <GameLogTable />
         </GameLogInformation>
-        { editMode ? 
-        <AdditionalSettings>
+        {/*{ editMode ? */}
+        <AdditionalSettings className={editMode ? "visible" : "hidden"}>
           <ColorHint>Background Color</ColorHint>
           <ColorContainer>
             <ColorItem color={"#287485"}/>
@@ -92,7 +92,7 @@ const ProfileView = (): JSX.Element => {
             <ColorItem color={"#9086ba"}/>
           </ColorContainer>
         </AdditionalSettings> 
-        : null }
+        {/*: null }*/}
       </PageContainer>
     </ViewWrapper>
   );
@@ -381,6 +381,18 @@ const AdditionalSettings = styled.div`
   width: 37.5%;
   display: flex;
   align-items: center;
+
+  transition: all 0.4s ease;
+  &.visible {
+    visibility: visible;
+    opacity: 100%;
+  }
+
+  transition: all 0.4s ease;
+  &.hidden {
+    visibility: none;
+    opacity: 0%;
+  }
 `
 
 const ColorHint = styled.div`
@@ -403,7 +415,7 @@ const ColorContainer = styled.div`
 `
 
 interface ColorProps {
-  color: string
+  color: string;
 }
 
 const ColorItem = styled.div<ColorProps>`
