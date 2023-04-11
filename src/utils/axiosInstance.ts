@@ -2,7 +2,7 @@ import axios from 'axios';
 
 //* Create an Axios Instance so we'll only need to change the url once.
 const instance = axios.create({
-    baseURL: 'https://86.48.25.224/:3002'
+    baseURL: 'https://mfchess-backend.onrender.com:3002'
 })
 
 export default instance;
