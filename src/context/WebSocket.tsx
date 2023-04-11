@@ -40,7 +40,7 @@ export const statusNumToDescription = new Map<number, string>([
     [4, "Paired with opponent"],
 ]);
 
-const ws: WebSocket = new WebSocket('wss://api.mfchess.com:443');
+const ws: WebSocket = new WebSocket('wss://api.mfchess.com:8000');
 console.log("NewSocket!!");
 
 
