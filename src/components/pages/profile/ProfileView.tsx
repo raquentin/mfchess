@@ -422,8 +422,8 @@ const ColorItem = styled.div<ColorProps>`
   margin: 0.1em;
   background-color: ${(p: ColorProps) => p.color};
   
-  transition: all 0.05s ease;
+  transition: all 0.1s ease;
   &:hover {
-    border: 0.1em solid #202020;
+    margin: 0.25em;    
   }
 `
