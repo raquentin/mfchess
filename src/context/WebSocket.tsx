@@ -40,7 +40,7 @@ export const statusNumToDescription = new Map<number, string>([
     [4, "Paired with opponent"],
 ]);
 
-const ws: WebSocket = new WebSocket('ws:///86.48.25.224:4000');
+const ws: WebSocket = new WebSocket('wss:///86.48.25.224:4000');
 console.log("NewSocket!!");
 
 
