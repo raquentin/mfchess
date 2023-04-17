@@ -193,7 +193,7 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
                     setChessGame(newGame);
                     sessionStorage.setItem(LOCALSTORAGE_CHESS_FEN, newGame.fen());
                     
-                    sessionStorage.setItem(LOCALSTORAGE_MESSAGES, "");
+                    sessionStorage.deleteItem(LOCALSTORAGE_MESSAGES);
 
 
                 } else if (payload.name === "move"){
