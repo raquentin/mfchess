@@ -6,18 +6,18 @@ import { Chess } from 'chess.js';
 import { UserType } from "types/UserType";
 
 const LOCALSTORAGE_CHESS_FEN = "save-chess-game";
-const savedChessFENString = localStorage.getItem(LOCALSTORAGE_CHESS_FEN);
+const savedChessFENString = sessionStorage.getItem(LOCALSTORAGE_CHESS_FEN);
 const savedChessFEN = savedChessFENString == null ? undefined : savedChessFENString
 
 const LOCALSTORAGE_COLOR = "save-color";
-const savedColor = localStorage.getItem(LOCALSTORAGE_COLOR);
+const savedColor = sessionStorage.getItem(LOCALSTORAGE_COLOR);
 
 const LOCALSTORAGE_MESSAGES = "save-messages";
-const savedMessagesString = localStorage.getItem(LOCALSTORAGE_MESSAGES);
+const savedMessagesString = sessionStorage.getItem(LOCALSTORAGE_MESSAGES);
 const savedMessages: null | PayloadType[] = savedMessagesString == null ? null : JSON.parse(savedMessagesString)
 
 const LOCALSTORAGE_OPPONENT = "save-opponent";
-const savedOpponentString = localStorage.getItem(LOCALSTORAGE_OPPONENT);
+const savedOpponentString = sessionStorage.getItem(LOCALSTORAGE_OPPONENT);
 const savedOpponent: null | UserType = savedOpponentString == null ? null : JSON.parse(savedOpponentString)
 
 // * According to level, the larger the better
@@ -40,7 +40,8 @@ export const statusNumToDescription = new Map<number, string>([
     [4, "Paired with opponent"],
 ]);
 
-const ws: WebSocket = new WebSocket('wss://api.mfchess.com:8000');
+// const ws: WebSocket = new WebSocket('wss://api.mfchess.com:8000');
+const ws: WebSocket = new WebSocket('ws://localhost:4000');
 console.log("NewSocket!!");
 
 
@@ -85,10 +86,10 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
     const [opponent, setOpponent] = useState<UserType>(savedOpponent || defaultUser)
 
     const clearLocalStorage = () => {
-        localStorage.setItem(LOCALSTORAGE_CHESS_FEN, "");
-        localStorage.setItem(LOCALSTORAGE_COLOR, "");
-        localStorage.setItem(LOCALSTORAGE_MESSAGES, "");
-        localStorage.setItem(LOCALSTORAGE_OPPONENT, "");
+        sessionStorage.removeItem(LOCALSTORAGE_CHESS_FEN);
+        sessionStorage.removeItem(LOCALSTORAGE_COLOR);
+        sessionStorage.removeItem(LOCALSTORAGE_MESSAGES);
+        sessionStorage.removeItem(LOCALSTORAGE_OPPONENT);
     }
 
     ws.onopen = () => {
@@ -100,12 +101,13 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
     }
     ws.onmessage = (byteString) => {
         const {type, payload} = JSON.parse(byteString.data);
+        console.log("Hello", type, payload);
         switch (type) {
             case "chat":
                 setMessages(messages => {
                     const newmessage: PayloadType[] = [...messages, payload]
 
-                    localStorage.setItem(LOCALSTORAGE_MESSAGES, JSON.stringify(newmessage));
+                    sessionStorage.setItem(LOCALSTORAGE_MESSAGES, JSON.stringify(newmessage));
                     return newmessage
                 });
 
@@ -182,23 +184,23 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
             case "game":
                 if (payload.name === "start game") {
                     setOpponent(payload.userID) // * not an userID but actually UserType
-                    localStorage.setItem(LOCALSTORAGE_OPPONENT, JSON.stringify(payload.userID));
+                    sessionStorage.setItem(LOCALSTORAGE_OPPONENT, JSON.stringify(payload.userID));
                     
                     setColor(payload.data)
-                    localStorage.setItem(LOCALSTORAGE_COLOR, payload.data);
+                    sessionStorage.setItem(LOCALSTORAGE_COLOR, payload.data);
                     
                     const newGame = new Chess()
                     setChessGame(newGame);
-                    localStorage.setItem(LOCALSTORAGE_CHESS_FEN, newGame.fen());
+                    sessionStorage.setItem(LOCALSTORAGE_CHESS_FEN, newGame.fen());
                     
-                    localStorage.setItem(LOCALSTORAGE_MESSAGES, "");
+                    sessionStorage.setItem(LOCALSTORAGE_MESSAGES, "");
 
 
                 } else if (payload.name === "move"){
                     const socketMove: SocketMoveType = JSON.parse(payload.data);
                     const chessGameCopy = new Chess(socketMove.fen);
                     setChessGame(chessGameCopy);
-                    localStorage.setItem(LOCALSTORAGE_CHESS_FEN, chessGameCopy.fen());
+                    sessionStorage.setItem(LOCALSTORAGE_CHESS_FEN, chessGameCopy.fen());
 
                 }
                 break;
@@ -213,7 +215,7 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
         const chessGameCopy = new Chess(chessGame.fen());
         const result = chessGameCopy.move(move);
         setChessGame(chessGameCopy);
-        localStorage.setItem(LOCALSTORAGE_CHESS_FEN, chessGameCopy.fen());
+        sessionStorage.setItem(LOCALSTORAGE_CHESS_FEN, chessGameCopy.fen());
         if (result) {
             const history = chessGameCopy.history({ verbose: true })
             const lastMove: SocketMoveType = history[history.length - 1]

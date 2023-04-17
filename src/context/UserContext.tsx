@@ -3,7 +3,7 @@ import {UserType} from "../types/UserType"
 import AxiosInstance from "../utils/axiosInstance";
 
 const LOCALSTORAGE_KEY = "save-user";
-const savedUserString = localStorage.getItem(LOCALSTORAGE_KEY);
+const savedUserString = sessionStorage.getItem(LOCALSTORAGE_KEY);
 const savedUser: null | UserType = savedUserString == null ? null : JSON.parse(savedUserString)
 
 
@@ -49,17 +49,21 @@ const UserContext = React.createContext<userContextType>([defaultUser, undefined
  * * Function that Wraps the context into a JSX element to abstract useContext.
  */
 export const UserProvider: React.FC<Props> = ({ children }) => {
-    console.log("local:", localStorage)
+    console.log("local:", sessionStorage)
     if (savedUser) console.log("Pulled from saved user:", savedUser)
     const [user, setUser] = useState<UserType>(savedUser || defaultUser);
 
     const updateUser = (updateFunction: SetStateAction<UserType>) => {
         setUser(updateFunction);
         const newUser = typeof updateFunction === 'function' ? updateFunction(user) : updateFunction;
-        localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(newUser));
+        if (newUser.loggedIn) {
+            sessionStorage.removeItem(LOCALSTORAGE_KEY);
+        } else {
+            sessionStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(newUser));
+        }
     }
     // useEffect(() => {
-    //     localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(user));
+    //     sessionStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(user));
     //     console.log("Saved:", user)
     // }, [user]);
 

@@ -23,6 +23,7 @@ const GameView = (): JSX.Element => {
   const [isConnected, status, , color, chess, opponent, sendMessage, makeMove, clearLocalStorage] = useGame()
   const orientation = color === 'w' ? "white" : "black";
 
+  console.log("GGGG", user, isConnected)
   if (user && user.loggedIn) {
     if (isConnected) {
       if (status === statusEnum.Connected) {
