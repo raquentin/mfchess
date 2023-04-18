@@ -119,6 +119,11 @@ const GameView = (): JSX.Element => {
           )       
           : (
             <StatusText>Status: {statusNumToDescription.get(status)}</StatusText>
+            // <NonBoardPart>
+            //     <InfoContainer>
+            //       {startGame ? <GameInformation></GameInformation> : <FakeButton>queueing...</FakeButton>}
+            //     </InfoContainer>
+            //   </NonBoardPart>
           )
         }
       </GameContainer>
@@ -181,6 +186,22 @@ const ChessBoardContainer = styled.div`
 // `;
 
 const PlayButton = styled.div`
+  background-color: #333333;
+  border: 0.22em solid black;
+  border-radius: 14px;
+  color: white;
+  font-size: 3em;
+  font-weight: 800;
+  text-decoration: none;
+  padding: 0.25em 0.5em;
+
+  transition: all 0.3s ease;
+  &:hover {
+    background-color: #287485;
+  }
+`;
+
+const FakeButton = styled.div`
   background-color: #333333;
   border: 0.22em solid black;
   border-radius: 14px;

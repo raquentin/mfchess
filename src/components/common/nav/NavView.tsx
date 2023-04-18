@@ -7,7 +7,7 @@ import styled from "styled-components";
 import ThemeColorContext from "context/colorContext";
 import LogoPNG from "assets/logo.png";
 import PlayButtonSVG from "assets/playbutton.svg";
-import ProfileButtonSVG from "assets/profilebutton.svg";
+import ProfileButtonSVG from "assets/profilebutton.jpg";
 
 
 /*

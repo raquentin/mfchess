@@ -42,8 +42,10 @@ const StyledMessage = styled.div<Props>`
     & p:last-child{
         padding: 2px 5px;
         border-radius: 5px;
+        font-size: 20px;
         background: #eee;
-        color: ${({isMe}) => (isMe? 'blue':'gray')};;
+        color: ${({isMe}) => (isMe? 'black':'black')};;
+        font-weight: bold;
         margin: auto 0;
     }
 `;
