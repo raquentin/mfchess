@@ -3,8 +3,9 @@ import {UserType} from "../types/UserType"
 import AxiosInstance from "../utils/axiosInstance";
 
 const LOCALSTORAGE_KEY = "save-user";
-const savedUserString = sessionStorage.getItem(LOCALSTORAGE_KEY);
-const savedUser: null | UserType = savedUserString == null ? null : JSON.parse(savedUserString)
+// const savedUserString = sessionStorage.getItem(LOCALSTORAGE_KEY);
+// console.log("Saved String", savedUserString)
+// const savedUser: null | UserType = savedUserString == null ? null : JSON.parse(savedUserString)
 
 
 /**
@@ -28,7 +29,7 @@ interface Props {
     children: React.ReactNode;
 }
 
-export const defaultUser: UserType = {
+export const defaultUser: Readonly<UserType> = {
   loggedIn: false,
   userID: "0",
   jwtCredential: "",
@@ -49,18 +50,27 @@ const UserContext = React.createContext<userContextType>([defaultUser, undefined
  * * Function that Wraps the context into a JSX element to abstract useContext.
  */
 export const UserProvider: React.FC<Props> = ({ children }) => {
-    console.log("local:", sessionStorage)
+    const savedUserString = sessionStorage.getItem(LOCALSTORAGE_KEY);
+    // console.log("Saved String", savedUserString)
+    const savedUser: null | UserType = savedUserString == null ? null : JSON.parse(savedUserString)
+
+    // console.log("local:", sessionStorage)
     if (savedUser) console.log("Pulled from saved user:", savedUser)
     const [user, setUser] = useState<UserType>(savedUser || defaultUser);
 
     const updateUser = (updateFunction: SetStateAction<UserType>) => {
-        setUser(updateFunction);
+        console.log("Hasa", updateFunction, typeof updateFunction === 'function')
         const newUser = typeof updateFunction === 'function' ? updateFunction(user) : updateFunction;
+        // const newUser = updateValue;
+        console.log("newUser", newUser)
+
         if (newUser.loggedIn) {
-            sessionStorage.removeItem(LOCALSTORAGE_KEY);
-        } else {
             sessionStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(newUser));
+        } else {
+            console.log("not logged in, delete")
+            sessionStorage.removeItem(LOCALSTORAGE_KEY);
         }
+        setUser(updateFunction);
     }
     // useEffect(() => {
     //     sessionStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(user));
@@ -78,10 +88,14 @@ export const UserProvider: React.FC<Props> = ({ children }) => {
         }).then((response) => {
             const fetchedUser = response.data.result[0]
             updateUser((user: UserType) => {
-                user.name = fetchedUser.name;
-                user.email = fetchedUser.email;
-                user.profilePictureUrl = fetchedUser.profilePictureUrl;
-                return user;
+                const updatedUser = {
+                    ...user,
+                    name: fetchedUser.name,
+                    email: fetchedUser.email,
+                    profilePictureUrl: fetchedUser.profilePictureUrl
+                };
+                
+                return updatedUser;
               })
         });
     }

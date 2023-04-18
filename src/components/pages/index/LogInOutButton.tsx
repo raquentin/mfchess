@@ -5,6 +5,7 @@ import { SetStateAction, useEffect, useState } from "react";
 import {useNavigate} from 'react-router-dom';
 import {defaultUser, useUser} from "context/UserContext";
 import {UserType} from "types/UserType"
+import { useGame } from "context/WebSocket";
 
 import AxiosInstance from "utils/axiosInstance";
 
@@ -18,8 +19,9 @@ import AxiosInstance from "utils/axiosInstance";
 */
 const LogInOutButton: React.FunctionComponent = (): JSX.Element => {
   const [user, updateUser, fetchUser] = useUser();
+  const [,,,,,,,, clearLocalStorage] = useGame();
 
-  console.log("User: ", user);
+  // console.log("User: ", user);
 
   const navigate = useNavigate();
   
@@ -30,16 +32,21 @@ const LogInOutButton: React.FunctionComponent = (): JSX.Element => {
    */
   const handleCredentialResponse = (response: { credential: string; }) => {
     const credential: string  = response.credential
+    console.log("BB")
     AxiosInstance({
       method: 'post',
       url: "login",
       data: {token: credential},
     }).then((response) => {
       updateUser!((user: UserType) => {
-        user.loggedIn = true;
-        user.userID = response.data.sub
-        user.jwtCredential = credential
-        return user;
+        const updatedUser = {
+          ...user,
+          loggedIn: true,
+          userID: response.data.sub,
+          jwtCredential: credential
+        };
+        
+        return updatedUser;
       })
       navigate('/', {replace: true});
       fetchUser!();
@@ -53,10 +60,15 @@ const LogInOutButton: React.FunctionComponent = (): JSX.Element => {
    */
   const signOut = () => {
     window.google.accounts.id.disableAutoSelect();
-    updateUser!((user: UserType) => defaultUser);
+
+    console.log("Sign out 11", defaultUser)
+    updateUser!(defaultUser);
+    clearLocalStorage();
     navigate('/', {replace: true});
-    user.loggedIn = false;
-    console.log(user)
+    // user.loggedIn = false;
+    // console.log(user)
+    console.log("Sign out 1")
+
   }
   
   /**

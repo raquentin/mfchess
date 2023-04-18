@@ -22,16 +22,21 @@ const Login: React.FunctionComponent = ()  => {
    */
   const handleCredentialResponse = (response: { credential: string; }) => {
     const credential: string  = response.credential
+    console.log("JJ", response.credential)
     AxiosInstance({
       method: 'post',
       url: "login",
       data: {token: credential},
     }).then((response) => {
       updateUser!((user: UserType) => {
-        user.loggedIn = true;
-        user.userID = response.data.sub
-        user.jwtCredential = credential
-        return user;
+        const updatedUser = {
+          ...user,
+          loggedIn: true,
+          userID: response.data.sub,
+          jwtCredential: credential
+        };
+        
+        return updatedUser;
       })
       navigate('/', {replace: true});
       fetchUser!();
@@ -45,9 +50,11 @@ const Login: React.FunctionComponent = ()  => {
    */
   const signOut = () => {
     window.google.accounts.id.disableAutoSelect();
+    console.log("DDDDD")
+    clearLocalStorage();
+    console.log("Sign out 2")
     updateUser!((user: UserType) => defaultUser)
     navigate('/', {replace: true});
-    clearLocalStorage()
   }
   
   /**

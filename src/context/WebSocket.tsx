@@ -14,6 +14,7 @@ const savedColor = sessionStorage.getItem(LOCALSTORAGE_COLOR);
 
 const LOCALSTORAGE_MESSAGES = "save-messages";
 const savedMessagesString = sessionStorage.getItem(LOCALSTORAGE_MESSAGES);
+console.log("G",savedMessagesString,"G")
 const savedMessages: null | PayloadType[] = savedMessagesString == null ? null : JSON.parse(savedMessagesString)
 
 const LOCALSTORAGE_OPPONENT = "save-opponent";
@@ -86,6 +87,7 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
     const [opponent, setOpponent] = useState<UserType>(savedOpponent || defaultUser)
 
     const clearLocalStorage = () => {
+        console.log("removed!!")
         sessionStorage.removeItem(LOCALSTORAGE_CHESS_FEN);
         sessionStorage.removeItem(LOCALSTORAGE_COLOR);
         sessionStorage.removeItem(LOCALSTORAGE_MESSAGES);
@@ -193,7 +195,7 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
                     setChessGame(newGame);
                     sessionStorage.setItem(LOCALSTORAGE_CHESS_FEN, newGame.fen());
                     
-                    sessionStorage.deleteItem(LOCALSTORAGE_MESSAGES);
+                    sessionStorage.removeItem(LOCALSTORAGE_MESSAGES);
 
 
                 } else if (payload.name === "move"){
