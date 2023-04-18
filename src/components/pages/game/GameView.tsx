@@ -91,7 +91,7 @@ const GameView = (): JSX.Element => {
             data: "",
         }
       })
-      // setStartGame(true)
+      setStartGame(true)
     } else {
       alert("Not connected or not authenticated")
     }
