@@ -42,7 +42,7 @@ export const statusNumToDescription = new Map<number, string>([
 ]);
 
 // const ws: WebSocket = new WebSocket('wss://api.mfchess.com:8000');
-const ws: WebSocket = new WebSocket('wss://mfchess-backend.onrender.com:4000');
+const ws: WebSocket = new WebSocket('ws://localhost:4000');
 console.log("NewSocket!!");
 
 
