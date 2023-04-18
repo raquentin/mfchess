@@ -108,6 +108,7 @@ export const UserProvider: React.FC<Props> = ({ children }) => {
                 
                 return updatedUser;
               })
+            
         });
     }
 

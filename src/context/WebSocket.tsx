@@ -94,6 +94,19 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
         sessionStorage.removeItem(LOCALSTORAGE_OPPONENT);
     }
 
+    useEffect(() => {
+        if (status < statusEnum.Authenticated && user.loggedIn && user.name !== "Default User") {
+            sendMessage({
+                type: "upgrade status",
+                payload: {
+                  name: "authentication",
+                  userID: "",
+                  data: user.jwtCredential,
+                }
+              })
+        }
+    }, [user]);
+
     ws.onopen = () => {
         console.log("connected")
         setIsConnected(true)
