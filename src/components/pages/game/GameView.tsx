@@ -1,6 +1,6 @@
 //* import third-party deps
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Chessboard } from "react-chessboard";
 
 //* import local
@@ -27,7 +27,7 @@ const GameView = (): JSX.Element => {
   if (user && user.loggedIn) {
     if (isConnected) {
       if (status === statusEnum.Connected) {
-        console.log("HHHHAAA")
+        // console.log("HHHHAAA")
         sendMessage({
             type: "upgrade status",
             payload: {
@@ -54,6 +54,11 @@ const GameView = (): JSX.Element => {
     // }
   }
 
+  useEffect(() => {
+    if (status == statusEnum.Paired) {
+      setStartGame(true);
+    }
+  }, [status]);
 
   const makeAMove = (move: MoveType) => {
     // console.log("mackmo", startGame, chess.turn(), color)
@@ -86,7 +91,7 @@ const GameView = (): JSX.Element => {
             data: "",
         }
       })
-      setStartGame(true)
+      // setStartGame(true)
     } else {
       alert("Not connected or not authenticated")
     }
