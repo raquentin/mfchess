@@ -22,12 +22,13 @@ const Login: React.FunctionComponent = ()  => {
    */
   const handleCredentialResponse = (response: { credential: string; }) => {
     const credential: string  = response.credential
-    console.log("JJ", response.credential)
+    console.log("####### Plain login")
     AxiosInstance({
       method: 'post',
       url: "login",
       data: {token: credential},
     }).then((response) => {
+      console.log("####### Plain update User")
       updateUser!((user: UserType) => {
         const updatedUser = {
           ...user,
@@ -48,14 +49,15 @@ const Login: React.FunctionComponent = ()  => {
   /**
    * * reset user to default (defined in UserContext)
    */
-  const signOut = () => {
-    window.google.accounts.id.disableAutoSelect();
-    console.log("DDDDD")
-    clearLocalStorage();
-    console.log("Sign out 2")
-    updateUser!((user: UserType) => defaultUser)
-    navigate('/', {replace: true});
-  }
+  // const signOut = () => {
+  //   window.google.accounts.id.disableAutoSelect();
+    
+  //   console.log("Plain logout")
+  //   clearLocalStorage();
+  //   console.log("Sign out 2")
+  //   updateUser!((user: UserType) => defaultUser)
+  //   navigate('/', {replace: true});
+  // }
   
   /**
    * * If not logged in, renders the login button and pops the prompt out.
@@ -88,7 +90,8 @@ const Login: React.FunctionComponent = ()  => {
    */
   return (
     <div>
-      {user!.loggedIn ? <button onClick={signOut}> Logout </button> : <div id="buttonDiv"></div>}
+      {/* {user!.loggedIn ? <button onClick={signOut}> Logout t </button> : <div id="buttonDiv"></div>} */}
+      <div id="buttonDiv"></div>
     </div>
   );
 }

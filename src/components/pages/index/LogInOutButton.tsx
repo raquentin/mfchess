@@ -32,12 +32,13 @@ const LogInOutButton: React.FunctionComponent = (): JSX.Element => {
    */
   const handleCredentialResponse = (response: { credential: string; }) => {
     const credential: string  = response.credential
-    console.log("BB")
+    console.log("####### Button login")
     AxiosInstance({
       method: 'post',
       url: "login",
       data: {token: credential},
     }).then((response) => {
+      console.log("####### Button Update User")
       updateUser!((user: UserType) => {
         const updatedUser = {
           ...user,
@@ -49,7 +50,7 @@ const LogInOutButton: React.FunctionComponent = (): JSX.Element => {
         return updatedUser;
       })
       navigate('/', {replace: true});
-      fetchUser!();
+      // fetchUser!();
     }).catch((err) => {
       throw new Error(err)
     })
@@ -61,6 +62,7 @@ const LogInOutButton: React.FunctionComponent = (): JSX.Element => {
   const signOut = () => {
     window.google.accounts.id.disableAutoSelect();
 
+    console.log("####### Button logout")
     console.log("Sign out 11", defaultUser)
     updateUser!(defaultUser);
     clearLocalStorage();

@@ -23,7 +23,7 @@ const GameView = (): JSX.Element => {
   const [isConnected, status, , color, chess, opponent, sendMessage, makeMove, clearLocalStorage] = useGame()
   const orientation = color === 'w' ? "white" : "black";
 
-  console.log("GGGG", user, isConnected)
+  // console.log("GGGG", user, isConnected)
   if (user && user.loggedIn) {
     if (isConnected) {
       if (status === statusEnum.Connected) {
@@ -56,7 +56,7 @@ const GameView = (): JSX.Element => {
 
 
   const makeAMove = (move: MoveType) => {
-    console.log("mackmo", startGame, chess.turn(), color)
+    // console.log("mackmo", startGame, chess.turn(), color)
     if(startGame === false) {
       return null;
     }
@@ -75,6 +75,22 @@ const GameView = (): JSX.Element => {
     if (move === null) return false;
     return true;
   }
+  const queueButtonOnClick = () => {
+    console.log("SSSTATUS:", status)
+    if (status >= statusEnum.Authenticated) {
+      sendMessage({
+        type: "upgrade status",
+        payload: {
+            name: "joinRoom",
+            userID: "",
+            data: "",
+        }
+      })
+      setStartGame(true)
+    } else {
+      alert("Not connected or not authenticated")
+    }
+  }
 
   //* render
   //? why is there an intermediate div between the chessboard and its container
@@ -87,7 +103,7 @@ const GameView = (): JSX.Element => {
             customLightSquareStyle={{backgroundColor: '#DCDCDC'}} customDarkSquareStyle={{backgroundColor: "#287485"}}/>
           </div>
         </ChessBoardContainer>
-        {status === statusEnum.Paired
+        {(true || status === statusEnum.Paired)
           ? (
               <NonBoardPart>
                 <PlayerContainer>
@@ -97,7 +113,7 @@ const GameView = (): JSX.Element => {
                     isTurn={(chess.turn() === 'w')} player={opponent}/>
                 </PlayerContainer>
                 <InfoContainer>
-                  {startGame ? <GameInformation></GameInformation> : <PlayButton onClick={() => setStartGame(true)} >queue for 5+0</PlayButton>}
+                  {startGame ? <GameInformation></GameInformation> : <PlayButton onClick={queueButtonOnClick} >queue for 5+0</PlayButton>}
                 </InfoContainer>
               </NonBoardPart>
           )       

@@ -7,6 +7,8 @@ import ViewWrapper from "components/common/ViewWrapper";
 import LogoPNG from "assets/logo.png";
 import { useUser } from "context/UserContext";
 import LogInOutButton from "./LogInOutButton";
+import { statusEnum, useGame } from "context/WebSocket";
+import {useNavigate} from 'react-router-dom';
 
 /*
  * IndexView is the head component for the index page (mfchess.com/)
@@ -14,6 +16,31 @@ import LogInOutButton from "./LogInOutButton";
 */
 const IndexView = (): JSX.Element => {
 
+  const [user, ,] = useUser()
+  const [isConnected, status, , color, chess, opponent, sendMessage, makeMove, clearLocalStorage] = useGame()
+  
+  const navigate = useNavigate();
+
+  const playOnClick = () => {
+    console.log("SSSTATUS:", status)
+    if (status >= statusEnum.Authenticated) {
+
+      navigate('/game', {replace: true});
+      
+    } else {
+      alert("Not connected or not authenticated")
+      if (user.loggedIn) {
+        sendMessage({
+          type: "upgrade status",
+          payload: {
+            name: "authentication",
+            userID: "",
+            data: user.jwtCredential,
+          }
+        })
+      }
+    }
+  }
   //* render
   return (
     <ViewWrapper> {/** holds animation and container logic*/}
@@ -22,7 +49,7 @@ const IndexView = (): JSX.Element => {
         <RightSideContainer>
           <TitleText>mfChess</TitleText>
           <ButtonContainer>
-            <PlayButton to="/game">play</PlayButton>
+            <PlayButton onClick={playOnClick}>play</PlayButton>
             <LogInOutButton />
             {/* <PlayButton to="/chatroom">chatroom</PlayButton> */}
           </ButtonContainer>
@@ -104,7 +131,7 @@ export const ButtonContainer = styled.div`
  ! Update LogInOutButton if you change this.
  TODO: Modularize this so you dont have to manually update
 */
-export const PlayButton = styled(Link)`
+export const PlayButton = styled.div`
   background-color: #333333;
   border: 0.22em solid black;
   border-radius: 14px;
@@ -114,8 +141,9 @@ export const PlayButton = styled(Link)`
   text-decoration: none;
   padding: 0.25em 0.5em;
 
-  transition: all 0.3s ease;
   &:hover {
     background-color: #287485;
   }
 `;
+
+// transition: all 0.3s ease;
