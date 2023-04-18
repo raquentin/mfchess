@@ -77,12 +77,23 @@ export const UserProvider: React.FC<Props> = ({ children }) => {
     //     console.log("Saved:", user)
     // }, [user]);
 
+    useEffect(() => {
+        if (user.loggedIn && user.name === "Default User") {
+            // sessionStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(newUser));
+            // console.log("EFFECT", user)
+            fetchUser();
+        }
+    }, [user]);
     /**
      * 
      */
     const fetchUser = () => {
         // * use user.userID to query DB
-        if (!user.loggedIn) throw new Error("User not logged in.")
+        console.log("Fetch User")
+        if (!user.loggedIn) {
+            console.log(user)
+            throw new Error("User not logged in.")
+        }
         AxiosInstance.post("login/userInfo", {
             sub: user.userID
         }).then((response) => {

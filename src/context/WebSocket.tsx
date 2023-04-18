@@ -99,11 +99,21 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
         setIsConnected(true)
     }
     const sendMessage = (message: MessageType) => {
-        ws.send(JSON.stringify(message));
+        try {
+            ws.send(JSON.stringify(message));
+        } catch (error) {
+            if (error instanceof Error) {
+                alert(error.message)
+            } else if (typeof error === "string") {
+                alert(error)
+            } else {
+                alert("An unknown error occurred");
+            }
+        }
     }
     ws.onmessage = (byteString) => {
         const {type, payload} = JSON.parse(byteString.data);
-        console.log("Hello", type, payload);
+        console.log("Message: ", type,",", payload);
         switch (type) {
             case "chat":
                 setMessages(messages => {
@@ -156,23 +166,31 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
                          * * This doesn't necessary need to be automatic, like in the future there might be options
                          * * to join different games and stuff. But for now it will be automatic
                          */
-                        sendMessage({
-                            type: "upgrade status",
-                            payload: {
-                                name: "joinRoom",
-                                userID: "",
-                                data: "",
-                            }
-                        })
+                        // sendMessage({
+                        //     type: "upgrade status",
+                        //     payload: {
+                        //         name: "joinRoom",
+                        //         userID: "",
+                        //         data: "",
+                        //     }
+                        // })
                     } else if (payload.data === "connected") {
                         console.log("Authentication failed, retrying")
     
+                        // sendMessage({
+                        //     type: "authentication",
+                        //     payload: {
+                        //     name: "",
+                        //     userID: "",
+                        //     data: user.jwtCredential,
+                        //     }
+                        // })
                         sendMessage({
-                            type: "authentication",
+                            type: "upgrade status",
                             payload: {
-                            name: "",
-                            userID: "",
-                            data: user.jwtCredential,
+                                name: "authentication",
+                                userID: "",
+                                data: user.jwtCredential,
                             }
                         })
                     } else {
@@ -196,6 +214,30 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
                     sessionStorage.setItem(LOCALSTORAGE_CHESS_FEN, newGame.fen());
                     
                     sessionStorage.removeItem(LOCALSTORAGE_MESSAGES);
+
+
+                } else if (payload.name === "resume game") {
+                    setOpponent(payload.userID) // * not an userID but actually UserType
+                    sessionStorage.setItem(LOCALSTORAGE_OPPONENT, JSON.stringify(payload.userID));
+                    
+                    setColor(payload.data)
+                    sessionStorage.setItem(LOCALSTORAGE_COLOR, payload.data);
+                    
+                    const resumedGame = new Chess(payload.fen);
+                    setChessGame(resumedGame);
+                    sessionStorage.setItem(LOCALSTORAGE_CHESS_FEN, resumedGame.fen());
+                    
+                    
+                    const messageArray: PayloadType[] = []
+                    payload.messages.forEach((element: { sender: any; userID: any; body: any; }) => {
+                        messageArray.push({
+                            name: element.sender,
+                            userID: element.userID,
+                            data: element.body,
+                        })
+                    });
+                    setMessages(messageArray);
+                    sessionStorage.setItem(LOCALSTORAGE_MESSAGES, JSON.stringify(messageArray));
 
 
                 } else if (payload.name === "move"){
