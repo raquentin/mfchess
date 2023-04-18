@@ -35,15 +35,11 @@ const ProfileView = (): JSX.Element => {
   }
 
   function onProfileImageClick() {
-    if (editMode) {
-      uploadProfileImage.current.click();
-    }
+    uploadProfileImage.current.click();
   }
 
   function onProfileBannerClick() {
-    if (editMode) {
-      uploadProfileBanner.current.click();
-    }
+    uploadProfileBanner.current.click();
   }
 
   //* render
@@ -53,11 +49,15 @@ const ProfileView = (): JSX.Element => {
       <input ref={uploadProfileImage} type={"file"} accept={"image/png, image/jpeg"} hidden={true}></input>
       <PageContainer>
         <BannerContainer>
-          <ProfileBanner src={Banner} onClick={onProfileBannerClick}></ProfileBanner>
+          <ProfileBanner src={Banner}></ProfileBanner>
+          { editMode ? <BannerOverlay onClick={onProfileBannerClick}>Change banner</BannerOverlay> : null }
         </BannerContainer>
         <BodyColor></BodyColor>
         <ProfileInformation>
-          <ProfileImage src={LogoPNG} onClick={onProfileImageClick}></ProfileImage>
+          <ProfileImageContainer>
+            <ProfileImage src={LogoPNG}></ProfileImage>
+            { editMode ? <ProfileImageOverlay onClick={onProfileImageClick}>Change profile picture</ProfileImageOverlay> : null }
+          </ProfileImageContainer>
           <ProfileDetails>
             <ProfileName type="text" readOnly={!editMode} defaultValue={"PlaceHolderName"}></ProfileName>
             <FlagAndRatingContainer>
@@ -71,6 +71,28 @@ const ProfileView = (): JSX.Element => {
         <GameLogInformation>
           <GameLogTable />
         </GameLogInformation>
+        {/*{ editMode ? */}
+        <AdditionalSettings className={editMode ? "visible" : "hidden"}>
+          <ColorHint>Background Color</ColorHint>
+          <ColorContainer>
+            <ColorItem color={"#287485"}/>
+            <ColorItem color={"#2062af"}/>
+            <ColorItem color={"#f4b528"}/>
+            <ColorItem color={"#dd3e48"}/>
+            <ColorItem color={"#bf89ae"}/>
+            <ColorItem color={"#5c88be"}/>
+            <ColorItem color={"#59bc10"}/>
+            <ColorItem color={"#e87034"}/>
+            <ColorItem color={"#f84c44"}/>
+            <ColorItem color={"#8c47fb"}/>
+            <ColorItem color={"#51c1ee"}/>
+            <ColorItem color={"#8cc453"}/>
+            <ColorItem color={"#c2987d"}/>
+            <ColorItem color={"#ce7777"}/>
+            <ColorItem color={"#9086ba"}/>
+          </ColorContainer>
+        </AdditionalSettings> 
+        {/*: null }*/}
       </PageContainer>
     </ViewWrapper>
   );
@@ -90,16 +112,32 @@ const BannerContainer = styled.div`
 `;
 
 const ProfileBanner = styled.img`
-  height: 100%;
+  position: absolute;
+  height: 30%;
   width: 100%;
+  top: 0;
+  left: 0;
   background-size: cover;
+  object-fit: cover;
   background-repeat: no-repeat;
+`;
+
+const BannerOverlay = styled.div`
+  position: absolute;
+  height: 30%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: #333333;
+  text-align: center;
+  color: white;
+  opacity: 0;
 
   transition: all 0.4s ease;
   &:hover {
     opacity: 0.5;
   }
-`;
+`
 
 const BodyColor = styled.div`
   height: 70%;
@@ -120,7 +158,7 @@ const ProfileInformation = styled.div`
   align-items: center;
 `;
 
-const ProfileImage = styled.img`
+/*const ProfileImage = styled.img`
   height: calc(100% - 10px);
   aspect-ratio: 1 / 1;
   background-position: center;
@@ -132,7 +170,48 @@ const ProfileImage = styled.img`
   &:hover {
     opacity: 0.5;
   }
+`;*/
+
+const ProfileImageContainer = styled.div`
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
+
+const ProfileImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: calc(100% - 10px);
+  aspect-ratio: 1 / 1;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 5px;
+`;
+
+const ProfileImageOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: calc(100% - 10px);
+  aspect-ratio: 1 / 1;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 5px;
+  background-color: #333333;
+  text-align: center;
+  color: white;
+  opacity: 0;
+
+  transition: all 0.4s ease;
+  &:hover {
+    opacity: 0.5;
+  }
+`
 
 const ProfileDetails = styled.div`
   color: white;
@@ -144,7 +223,7 @@ const ProfileDetails = styled.div`
 const ProfileName = styled.input`
   background-color: transparent;
   color: white;
-  font-size: 1vw;
+  font-size: 1.75vw;
   font-weight: bold;
   border: none;
 
@@ -162,10 +241,10 @@ const GameLogInformation = styled.div`
   margin-left: 5%; 
   margin-right: auto; 
   background-color: #333333;
-  height: 25%;
+  height: 50%;
   width: 50%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   overflow-x: auto;
   table {
     width: 100%;
@@ -267,23 +346,84 @@ const FlagAndRatingContainer = styled.div`
 `;
 
 const FlagIcon = styled.img`
-  height: 20px;
+  height: 1.5vw;
   padding: 2px;
 `;
 
 const EditButton = styled.button`
   position: absolute;
   bottom: 0;
+  right: 0;
   margin: 5px;
-  background-color: black;
+  background-color: #444444;
+  border: 0;
   color: white;
   font-size: 1em;
   font-weight: 800;
   text-decoration: none;
   padding: 0.5em 2em;
 
-  transition: all 0.8s ease;
+  transition: all 0.2s ease;
   &:hover {
-    background-color: grey;
+    background-color: #555555;
   }
 `;
+
+const AdditionalSettings = styled.div`
+  position: absolute;
+  top: 35%;
+  left: 52.5%; 
+  right: 0; 
+  margin-left: 5%; 
+  margin-right: auto; 
+  background-color: #333333;
+  height: 55%;
+  width: 37.5%;
+  display: flex;
+  align-items: center;
+
+  transition: all 0.4s ease;
+  &.visible {
+    visibility: visible;
+    opacity: 100%;
+  }
+
+  transition: all 0.4s ease;
+  &.hidden {
+    visibility: none;
+    opacity: 0%;
+  }
+`
+
+const ColorHint = styled.div`
+  position: absolute;
+  top: 2.5%;
+  left: 2.5%;
+  color: white;
+  font-weight: bold;
+`
+
+const ColorContainer = styled.div`
+  position: absolute;
+  top: 10%;
+  left: 2.5%;
+  width: 95%;
+  height: 50%;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+`
+
+interface ColorProps {
+  color: string;
+}
+
+const ColorItem = styled.div<ColorProps>`
+  margin: 0.1em;
+  background-color: ${(p: ColorProps) => p.color};
+  
+  transition: all 0.1s ease;
+  &:hover {
+    margin: 0.25em;    
+  }
+`
