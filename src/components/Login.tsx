@@ -40,7 +40,7 @@ const Login: React.FunctionComponent = ()  => {
         return updatedUser;
       })
       navigate('/', {replace: true});
-      fetchUser!();
+      // fetchUser!();
     }).catch((err) => {
       throw new Error(err)
     })

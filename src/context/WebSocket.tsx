@@ -94,6 +94,19 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
         sessionStorage.removeItem(LOCALSTORAGE_OPPONENT);
     }
 
+    useEffect(() => {
+        if (status < statusEnum.Authenticated && user.loggedIn && user.name !== "Default User") {
+            sendMessage({
+                type: "upgrade status",
+                payload: {
+                  name: "authentication",
+                  userID: "",
+                  data: user.jwtCredential,
+                }
+              })
+        }
+    }, [user]);
+
     ws.onopen = () => {
         console.log("connected")
         setIsConnected(true)
@@ -215,6 +228,9 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
                     
                     sessionStorage.removeItem(LOCALSTORAGE_MESSAGES);
 
+                    setStatus(statusEnum.Paired);
+                    console.log("Status Set")
+
 
                 } else if (payload.name === "resume game") {
                     setOpponent(payload.userID) // * not an userID but actually UserType
@@ -239,6 +255,8 @@ export const GameProvider: React.FC<Props> = ({ children }) => {
                     setMessages(messageArray);
                     sessionStorage.setItem(LOCALSTORAGE_MESSAGES, JSON.stringify(messageArray));
 
+                    setStatus(statusEnum.Paired);
+                    console.log("Status Set")
 
                 } else if (payload.name === "move"){
                     const socketMove: SocketMoveType = JSON.parse(payload.data);
