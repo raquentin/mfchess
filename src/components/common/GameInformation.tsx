@@ -25,7 +25,7 @@ const InfoContainer = styled.div`
 `;
 
 const MoveHistory = styled.div`
-  background-color: red;
+  background-color: #222222;
 `;
 
 const ChatContainer = styled.div`

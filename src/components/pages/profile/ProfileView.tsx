@@ -6,7 +6,7 @@ import 'react-tabs/style/react-tabs.css';
 
 //* import local
 import ViewWrapper from "components/common/ViewWrapper";
-import LogoPNG from "assets/user-profile-icon-free-vector.png";
+import LogoPNG from "assets/profilebutton.jpg";
 import Banner from "assets/banner.jpg";
 import USFlag from "assets/flags/United-States.png"
 
