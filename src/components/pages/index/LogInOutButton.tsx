@@ -104,10 +104,10 @@ const LogInOutButton: React.FunctionComponent = (): JSX.Element => {
     <>
       {user!.loggedIn
       ? (
-        <PlayButtonFake onClick={signOut}>logout bu</PlayButtonFake>
+        <PlayButtonFake onClick={signOut}>logout</PlayButtonFake>
       )
       : (
-        <PlayButton to="/login">login bu</PlayButton>
+        <PlayButton to="/login">login</PlayButton>
       )}
     </>
     
